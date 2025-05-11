@@ -1,0 +1,98 @@
+.music-item {
+    display: flex;
+    align-items: center;
+    width: 500px;
+    height: 95px;
+    background-color: #2a2a2a; /* Màu nền nhẹ nhàng */
+    border-radius: 4px;
+    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .music-item:hover {
+      background-color: #383838; /* Hiệu ứng hover */
+  }
+  
+  .music-item-image {
+    width: 100px;
+    height: 95px;
+    object-fit: cover;
+    flex-shrink: 0; /* Không co ảnh */
+    background-color: #444; /* Màu nền placeholder */
+  }
+  
+  .music-item-info {
+    flex-grow: 1;
+    padding-left: 18px; /* Khoảng cách 18px từ ảnh */
+    padding-right: 18px; /* Padding phải để tên không chạm sát */
+    overflow: hidden; /* Quan trọng để ellipsis và animation hoạt động */
+    white-space: nowrap; /* Ngăn text xuống dòng */
+  }
+  
+  .music-item-title {
+    font-size: 16px;
+    color: #FFFFFF;
+    margin: 0 0 5px 0; /* Khoảng cách dưới với artist */
+    overflow: hidden; /* Ẩn phần thừa */
+    text-overflow: ellipsis; /* Hiển thị '...' */
+    white-space: nowrap; /* Ngăn xuống dòng */
+    display: block; /* Để overflow hoạt động */
+  }
+  
+  .music-item-artist {
+    font-size: 14px; /* Kích thước nhỏ hơn cho artist */
+    color: #b3b3b3; /* Màu nhạt hơn */
+    margin: 0;
+    font-weight: 300; /* Inter Light */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  /* Text Overflow Scroll Animation */
+  .music-item-title.overflow-scroll-animation:hover {
+      overflow: visible; /* Hiện phần bị ẩn khi hover */
+      white-space: normal; /* Cho phép text dài */
+      /* Tùy chọn: Dùng animation để cuộn nếu text vẫn quá dài */
+      /* Hoặc đơn giản là cho phép nó tràn ra khi hover */
+      /* Cách 1: Dùng animation - phức tạp hơn */
+       text-overflow: clip; /* Bỏ ellipsis khi hover để animation */
+       animation: scroll-text 10s linear infinite alternate; /* Điều chỉnh duration */
+       display: inline-block; /* Cần thiết cho animation transform */
+  }
+  
+  @keyframes scroll-text {
+      from {
+          transform: translateX(0%);
+      }
+      to {
+          /* Dịch chuyển sang trái một khoảng bằng phần bị thừa */
+          /* Cần tính toán bằng JS hoặc ước lượng */
+          transform: translateX(calc(-100% + 100px)); /* Ví dụ: 100px là chiều rộng nhìn thấy */
+      }
+  }
+  /* Cách 2: Hiện đầy đủ khi hover (đơn giản hơn) */
+   /* .music-item-title.overflow-scroll-animation:hover {
+       overflow: visible;
+       white-space: normal;
+       position: relative; /* Để đảm bảo nó nổi lên trên nếu cần */
+       /* background-color: #383838; /* Nền giống hover item */
+   /* } */
+
+   .playing-indicator-container {
+  width: 16px; /* Phải khớp với width của SVG icon */
+  height: 16px; /* Phải khớp với height của SVG icon */
+  display: flex; /* Giúp căn giữa icon nếu cần */
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Không co lại */
+}
+
+/* Style cho SVG sóng nhạc bên trong container */
+.playing-indicator-container .soundwave-icon {
+  /* Kích thước đã được set bởi props width/height hoặc thẻ SVG */
+  /* Màu sắc đã được set bởi props color hoặc thẻ SVG */
+  /* Animation đã được định nghĩa trong AnimatedSoundwaveIcon.css */
+  /* Đảm bảo nó hiển thị */
+  display: block;
+}

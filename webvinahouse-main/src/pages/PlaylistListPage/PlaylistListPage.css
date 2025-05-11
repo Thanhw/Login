@@ -1,0 +1,81 @@
+/* src/pages/PlaylistListPage/PlaylistListPage.css */
+
+/* Đổi tên class container */
+.playlist-list-page-container {
+    padding: 25px 35px 50px 35px; /* Giữ nguyên padding */
+}
+
+/* Đổi tên class loading/error */
+.playlist-list-loading,
+.playlist-list-error {
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa;
+}
+
+/* Breadcrumb (Giữ nguyên hoặc chỉnh sửa text nếu cần) */
+.breadcrumb {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+.breadcrumb a { color: #ccc; text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+
+/* Tiêu đề trang (Đổi tên class) */
+.playlist-list-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Lưới Playlist (Đổi tên class, giữ nguyên layout 4 cột) */
+.playlist-list-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Vẫn là 4 cột */
+    gap: 30px 25px; /* Giữ nguyên khoảng cách */
+}
+
+/* Style cho từng item Playlist trong grid (Đổi tên class) */
+.playlist-grid-item {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.playlist-grid-item:hover {
+    transform: scale(1.03);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Đổi tên class ảnh */
+.playlist-grid-image {
+    width: 50%;
+    aspect-ratio: 1 / 1; /* Giữ ảnh vuông */
+    object-fit: cover;
+    /* Giữ lại bo tròn hoặc đổi thành bo góc nếu muốn */
+    /* border-radius: 50%; */
+    border-radius: 8px; /* Ví dụ bo góc thay vì bo tròn */
+    margin-bottom: 12px;
+    background-color: #333;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Đổi tên class tên playlist */
+.playlist-grid-name {
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,71 @@
+/* src/pages/GenrePage/GenrePage.css */
+
+.genre-page-container {
+    padding: 25px 35px 50px 35px;
+  }
+  
+  .genre-page-loading,
+  .genre-page-error {
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa;
+  }
+  
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 15px;
+  }
+  .breadcrumb a { color: #ccc; text-decoration: none; }
+  .breadcrumb a:hover { color: #fff; }
+  
+  /* Tiêu đề thể loại */
+  .genre-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 30px;
+    /* Không cần uppercase vì đã format tên */
+  }
+  
+  /* Lưới bài hát */
+  .genre-songs-grid {
+    display: grid;
+    /* --- QUAN TRỌNG: Tạo 2 cột --- */
+    grid-template-columns: repeat(2, 1fr); /* Chia thành 2 cột bằng nhau */
+    /* Khoảng cách giữa các bài hát */
+    gap: 18px 30px; /* Khoảng cách dọc 18px, ngang 30px (giống grid trang chủ) */
+  }
+  
+  /* Style cho MusicItem được kế thừa */
+  /* Nếu cần ghi đè hoặc thêm style riêng cho MusicItem ở trang này thì viết ở đây */
+  
+  /* Nút Xem Thêm */
+  .load-more-button.genre-load-more { /* Thêm class để có thể style riêng nếu cần */
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    margin-top: 30px; /* Khoảng cách với lưới */
+    padding: 10px 0; /* Tăng vùng click */
+    display: block; /* Để căn giữa hoặc đặt margin */
+    margin-left: auto; /* Ví dụ căn phải */
+    margin-right: auto; /* Ví dụ căn giữa */
+    width: fit-content; /* Chỉ rộng bằng nội dung text */
+    text-transform: uppercase;
+  }
+  
+  .load-more-button.genre-load-more:hover:not(:disabled) {
+    color: #ccc;
+  }
+  
+  .load-more-button.genre-load-more:disabled {
+    color: #666;
+    cursor: not-allowed;
+  }

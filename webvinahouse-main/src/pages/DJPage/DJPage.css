@@ -1,0 +1,107 @@
+/* src/pages/DJPage/DJPage.css */
+
+.dj-page-container {
+    padding: 25px 35px 50px 35px; /* Top, Right, Bottom, Left padding */
+    /* Tương tự padding của HomePage */
+  }
+  
+  .dj-page-loading,
+  .dj-page-error {
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa;
+  }
+  
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 25px;
+  }
+  .breadcrumb a {
+    color: #ccc;
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: #fff;
+  }
+  
+  /* Phần thông tin DJ */
+  .dj-info-section {
+    display: flex;
+    align-items: flex-start; /* Căn theo top */
+    gap: 30px; /* Khoảng cách giữa ảnh và text */
+    margin-bottom: 40px; /* Khoảng cách với phần bài hát */
+  }
+  
+  .dj-avatar {
+    width: 230px;
+    height: 230px;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    border-radius: 50%; /* Bo tròn ảnh DJ */
+    /* hoặc border-radius: 8px; nếu muốn ảnh vuông bo góc */
+    background-color: #333; /* Màu nền placeholder */
+    flex-shrink: 0; /* Không co ảnh lại */
+  }
+  
+  .dj-details {
+    flex-grow: 1; /* Chiếm phần không gian còn lại */
+  }
+  
+  .dj-name {
+    font-size: 28px; /* Kích thước tên lớn */
+    font-weight: 600; /* Đậm hơn */
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  
+  .dj-description {
+    font-size: 15px;
+    color: #ccc;
+    line-height: 1.6;
+    /* Có thể giới hạn số dòng và thêm '...' nếu mô tả quá dài */
+    /* display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden; */
+  }
+  
+  /* Phần danh sách bài hát */
+  .dj-songs-section {
+    /* Style cho cả khu vực bài hát */
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 400; /* Inter Regular */
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Viết hoa tiêu đề */
+  }
+  
+  .dj-songs-grid {
+    display: grid;
+    /* Tạo 2 cột bằng nhau */
+    grid-template-columns: repeat(2, 1fr);
+    /* Khoảng cách giữa các bài hát */
+    gap: 18px 30px; /* Khoảng cách dọc 18px, ngang 30px */
+  }
+  
+  /* Style cho MusicItem sẽ được kế thừa từ component MusicItem */
+  /* Nếu cần style khác biệt cho MusicItem trong trang này, bạn có thể thêm ở đây */
+  /* Ví dụ:
+  .dj-songs-grid .music-item {
+    background-color: #3a3a3a; // Màu nền khác chẳng hạn
+  }
+  */
+  
+  /* Style cho nút Xem thêm (nếu có) */
+  .load-more-button {
+    background: none; border: none; color: #FFFFFF;
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    font-weight: 400; cursor: pointer; margin-top: 20px;
+    padding: 5px 0; display: block;
+  }
+  .load-more-button:hover { color: #ccc; }

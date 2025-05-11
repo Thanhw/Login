@@ -1,0 +1,39 @@
+.app-container {
+    display: flex;
+    position: relative; /* Để Music Player có thể fixed ở dưới */
+    min-height: 100vh;
+    padding-bottom: 80px; /* Khoảng trống cho Music Player, điều chỉnh nếu cần */
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease; /* Hiệu ứng khi sidebar đóng mở */
+    margin-left: 42px; /* Độ rộng của thanh trigger sidebar + khoảng cách */
+  }
+  
+  .main-content.sidebar-open {
+     margin-left: 292px; /* 250px sidebar + 40px gap + 2px bar */
+  }
+  
+  .page-content {
+     flex-grow: 1; /* Đảm bảo nội dung trang chiếm hết không gian còn lại */
+     /* padding top có thể cần thiết nếu navbar không phải sticky hoàn toàn */
+     /* padding-top: 100px; */
+  }
+
+  /* src/components/Layout/Layout.css */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5; /* Tùy chọn màu nền */
+}
+
+.auth-content {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}

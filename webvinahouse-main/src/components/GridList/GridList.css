@@ -1,0 +1,11 @@
+.grid-list-container {
+    display: grid;
+    grid-template-columns: repeat(2, 500px); /* 2 cột, mỗi cột 500px */
+    gap: 18px 30px; /* Khoảng cách dọc 18px, ngang 30px (điều chỉnh nếu cần) */
+    /* justify-content: space-between; */ /* Căn chỉnh nếu cần */
+  }
+  
+  .grid-spacer {
+      grid-column: 1 / -1; /* Chiếm hết chiều rộng grid */
+      height: 15px; /* Khoảng trống giữa 2 grid */
+  }

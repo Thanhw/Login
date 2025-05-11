@@ -1,0 +1,21 @@
+.footer {
+    background-color: #111; /* Màu nền tối hơn chút */
+    color: #a0a0a0; /* Màu chữ nhạt */
+    padding: 20px 40px; /* Padding trên dưới, trái phải */
+    display: flex;
+    justify-content: space-between; /* Đẩy 2 cột ra xa */
+    font-size: 12px;
+    font-weight: 400; /* Inter Regular */
+    border-top: 1px solid #282828;
+    /* margin-top: auto; /* Đẩy footer xuống dưới nếu content ngắn (trong flex column layout) */
+  }
+  
+  .footer-column {
+    flex-basis: 45%; /* Mỗi cột chiếm khoảng 45% */
+  }
+  
+  .footer-column p {
+      margin: 5px 0; /* Khoảng cách giữa các dòng text */
+      line-height: 1.4;
+  }
+  /* Thêm style cho link nếu có */

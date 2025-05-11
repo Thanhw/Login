@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #22201F;
+  color: #FFFFFF;
+  overflow-x: hidden;
+  padding-top: 60px; /* Thêm padding-top để tránh navbar che khuất nội dung */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Reset CSS */
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Placeholder cho font light khi cần */
+.font-light {
+  font-weight: 300;
+}
+
+/* Placeholder cho font regular khi cần (thường là mặc định) */
+.font-regular {
+  font-weight: 400;
+}
+
+/* Placeholder cho chữ uppercase */
+.text-uppercase {
+  text-transform: uppercase;
+}

@@ -1,0 +1,95 @@
+🔥 Nội dung trang web hiện tại là nội dung giả
+🔥 Nhớ đọc kĩ note từng trang js, css và sửa khi cần
+⚠️ = CHƯA CẦN LẮM/KHÔNG ƯU TIÊN
+
+vinahouse/
+├── public/
+│   └── index.html  # file này để import font
+├── src/
+│   └── assets/      # Thư mục chứa hình ảnh (logo.png, usericon.png, slide-imgX.png, ...)
+│   ├── components/  # Chứa các component tái sử dụng (Navbar, Sidebar, Footer, MusicPlayer, Slideshow, ...)
+│   ├── pages/       # Chứa các component đại diện cho từng trang (HomePage, PlaylistPage, DJPage, ...)
+│   ├── contexts/    # (Tùy chọn) Chứa context cho state management (Auth, Player)
+│   ├── hooks/       # (Tùy chọn) Chứa custom hooks
+│   ├── services/    # Chứa code gọi API
+│   ├── styles/      # Chứa file CSS global hoặc base styles
+│   ├── App.js       # Component gốc, cấu hình routing
+│   ├── index.js     # Điểm vào của ứng dụng
+│   └── index.css    # CSS toàn cục
+
+🔥 cd vào thư mục webvinahouse. chạy:
+npm install react-router-dom axios react-slick slick-carousel sstyled-components
+npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p
+
+🔥 Gọi API: Sử dụng apiClient (hoặc axios trực tiếp) trong các component (thường trong useEffect) để fetch hoặc post dữ liệu:
+
+// Ví dụ trong HomePage.js
+import apiClient from '../../services/api'; // Import instance đã cấu hình
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // // backend: thay thế bằng các endpoint thực tế
+      const [playlistRes, djRes, genresRes] = await Promise.all([
+         apiClient.get('/playlists/featured'),
+         apiClient.get('/djs/featured'),
+         apiClient.get('/genres/homepage')
+      ]);
+      setPlaylists(playlistRes.data);
+      setDjs(djRes.data);
+      setGenresData(genresRes.data);
+      // // backend: đảm bảo cấu trúc data trả về khớp với cách frontend xử lý
+    } catch (error) {
+      console.error("Lỗi fetch dữ liệu trang chủ:", error);
+       // backend: xử lý lỗi từ api (ví dụ: 401 Unauthorized, 404 Not Found, 500 Server Error)
+    }
+  };
+  fetchData();
+}, []); // Chạy 1 lần khi component mount
+
+🔥 Xử lý CORS: Đảm bảo backend Django đã cấu hình CORS (Cross-Origin Resource Sharing) để cho phép request từ địa chỉ frontend React của bạn 
+(vd: http://localhost:3000). Sử dụng thư viện django-cors-headers.
+
+pip install django-cors-headers
+Thêm corsheaders vào INSTALLED_APPS.
+Thêm corsheaders.middleware.CorsMiddleware vào MIDDLEWARE (thường đặt trước CommonMiddleware).
+Cấu hình CORS_ALLOWED_ORIGINS trong settings.py, ví dụ:
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000", # Địa chỉ React dev server
+    # Thêm địa chỉ frontend khi deploy
+]
+# Hoặc cho phép tất cả (ít an toàn hơn):
+# CORS_ALLOW_ALL_ORIGINS = True
+
+🔥 Xác thực (Authentication):
+
+⭐ Đăng nhập/Đăng ký: Frontend gửi request POST đến API Django với username/password. Backend xác thực, tạo session hoặc trả về token (JWT). 
+Frontend lưu token (thường vào localStorage hoặc sessionStorage).⚠️
+
+⭐ Request cần xác thực: Frontend gửi token trong header Authorization của mỗi request cần xác thực. Backend kiểm tra token trước khi xử lý request.
+
+⭐ Đăng xuất: Frontend xóa token khỏi storage và có thể gọi API backend để hủy token/session.
+
+⭐ // backend: cần cung cấp các api endpoint cho login, register, logout, và kiểm tra token/session.
+
+🔥 Tương tác dữ liệu (Yêu thích, Playlist):
+
+⭐ Khi user click nút "Yêu thích": Frontend gửi request (POST/DELETE hoặc PATCH) đến API Django với trackId và thông tin user (qua token). 
+Backend cập nhật trạng thái isFavorite trong database (MySQL).
+⭐ Khi user click "Thêm vào playlist": Frontend gửi request POST đến API Django với trackId, playlistId và thông tin user. 
+Backend thêm track vào playlist tương ứng trong database.
+⭐ // backend: cần api để lấy danh sách bài hát yêu thích, lấy danh sách playlist của user, lấy chi tiết playlist, thêm/xoá bài hát khỏi yêu thích, 
+thêm/xoá bài hát khỏi playlist.
+
+🔥Hoàn thiện và Tinh chỉnh:
+⭐State Management: Xem xét sử dụng Context API hoặc Redux/Zustand nếu state trở nên phức tạp 
+(đặc biệt là state của Music Player và trạng thái đăng nhập của user).
+⭐Tạo các trang còn lại: Dựa trên cấu trúc đã có, tạo các component cho các trang khác (Playlist, DJ, Genre, User Profile,...) 
+và thêm Route cho chúng trong App.js. Các trang này sẽ fetch dữ liệu tương ứng từ API.
+⭐Tạo Popup/Modal: Implement cửa sổ popup cho Đăng nhập/Đăng ký (có thể dùng thư viện như react-modal hoặc tự xây dựng).
+⭐Error Handling: Xử lý các lỗi từ API một cách thân thiện với người dùng (hiển thị thông báo lỗi).
+⭐Loading States: Hiển thị trạng thái loading (spinner, skeleton screen) trong khi chờ dữ liệu từ API.
+⭐Responsive Design: Kiểm tra và điều chỉnh CSS để trang web hiển thị tốt trên các kích thước màn hình khác nhau (nếu cần).
+⭐Testing: Viết unit test và integration test nếu cần thiết.
+⭐Optimization: Tối ưu hóa hiệu năng (code splitting, lazy loading component/route, tối ưu API call).

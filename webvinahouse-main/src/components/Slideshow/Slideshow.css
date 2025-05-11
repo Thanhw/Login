@@ -1,0 +1,39 @@
+.slideshow-container {
+    /* Container cần có chiều rộng để giới hạn slider */
+    /* width: calc(100% - 60px); */ /* Ví dụ: 100% trừ padding trái/phải của HomePage */
+    width: 100%; /* Hoặc để 100% và slider tự xử lý */
+    margin-bottom: 25px; /* Khoảng cách với section dưới */
+    /* overflow: hidden; Đảm bảo phần bị cắt không hiển thị scrollbar */
+  }
+  
+  /* Quan trọng: Tùy chỉnh chiều rộng và khoảng cách các slide */
+  .slide-item-wrapper {
+    /* Padding hoặc margin để tạo khoảng cách 35px */
+    padding-right: 35px !important; /* !important để ghi đè style của slick */
+    box-sizing: content-box !important; /* Đảm bảo padding không làm tăng width */
+  }
+  
+  .slide-image {
+    width: 500px !important; /* Chiều rộng cố định */
+    height: 280px !important; /* Chiều cao cố định */
+    object-fit: cover; /* Cắt ảnh nếu tỉ lệ không đúng */
+    display: block !important;
+  }
+  
+  /* Tùy chỉnh nút next/prev nếu cần */
+  .slick-prev, .slick-next {
+      z-index: 1;
+      /* Chỉnh vị trí, màu sắc, kích thước... */
+  }
+  .slick-prev:before, .slick-next:before {
+      color: #555; /* Màu mũi tên */
+      font-size: 30px;
+  }
+  .slick-prev { left: -30px; } /* Đẩy nút prev ra ngoài */
+  .slick-next { right: -10px; } /* Đẩy nút next ra ngoài */
+  
+  /* Ẩn scrollbar nếu slider tạo ra */
+  
+  .slick-list {
+     /* Có thể cần overflow: hidden; */
+  }

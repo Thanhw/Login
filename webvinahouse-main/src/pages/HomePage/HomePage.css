@@ -1,0 +1,9 @@
+.homepage-container {
+    padding-top: 25px; /* Khoảng cách từ navbar */
+    padding-left: 35px; /* Padding trái cho nội dung */
+    padding-right: 25px; /* Padding phải cho nội dung */
+    padding-bottom: 50px; /* Khoảng cách với footer */
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Khoảng cách giữa các section */
+  }

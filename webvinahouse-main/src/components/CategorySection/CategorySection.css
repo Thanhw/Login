@@ -1,0 +1,38 @@
+.category-section {
+    margin-bottom: 25px; /* Khoảng cách giữa các category */
+  }
+  
+  .category-title {
+    font-size: 20px;
+    font-weight: 400; /* Inter Regular */
+    color: #FFFFFF;
+    margin-bottom: 15px; /* Khoảng cách với content */
+    display: inline-block; /* Để có thể click được */
+    text-decoration: none; /* Bỏ gạch chân nếu là Link */
+    cursor: pointer;
+  }
+  .category-title:hover {
+      color: #ccc; /* Hiệu ứng hover nhẹ */
+  }
+  
+  .category-content {
+    /* Style chung cho content nếu cần */
+  }
+  
+  .load-more-button {
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; /* Kích thước chữ cho nút xem thêm */
+    font-weight: 400; /* Inter Regular */
+    cursor: pointer;
+    margin-top: 15px; /* Khoảng cách với grid */
+    padding: 5px 0; /* Tăng vùng click */
+    display: block; /* Để margin-top hoạt động */
+    /* text-align: center; */ /* Căn giữa nếu cần */
+  }
+  
+  .load-more-button:hover {
+    color: #ccc;
+  }

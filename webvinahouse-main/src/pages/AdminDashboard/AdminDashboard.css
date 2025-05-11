@@ -1,0 +1,746 @@
+.admin-dashboard {
+  padding: 20px;
+  background-color: #22201F;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-dashboard h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.admin-content {
+  display: flex;
+  gap: 20px;
+}
+
+.content-section {
+  flex-grow: 1;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.content-section h3 {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.content-section h4 {
+  font-size: 16px;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Search bar styles */
+.search-bar {
+  margin-bottom: 15px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  font-size: 14px;
+}
+
+.search-bar input::placeholder {
+  color: #bbb;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border: 1px solid #007bff;
+}
+
+/* Add song section styles */
+.add-song-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.add-song-section label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.add-song-section select {
+  padding: 5px 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-song-section select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Table styles for Users tab */
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.users-table th,
+.users-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+.users-table th {
+  background-color: #333;
+  color: #bbb;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.users-table td {
+  color: #bbb;
+}
+
+.users-table tr:hover {
+  background-color: #383838;
+}
+
+/* Column widths for Users table */
+.users-table th:nth-child(1),
+.users-table td:nth-child(1) {
+  width: 10%;
+}
+
+.users-table th:nth-child(2),
+.users-table td:nth-child(2) {
+  width: 20%;
+}
+
+.users-table th:nth-child(3),
+.users-table td:nth-child(3) {
+  width: 30%;
+}
+
+.users-table th:nth-child(4),
+.users-table td:nth-child(4) {
+  width: 20%;
+}
+
+.users-table th:nth-child(5),
+.users-table td:nth-child(5) {
+  width: 20%;
+}
+
+/* Table styles for Songs tab */
+.songs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.songs-table th,
+.songs-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+.songs-table th {
+  background-color: #333;
+  color: #bbb;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.songs-table td {
+  color: #bbb;
+}
+
+.songs-table tr:hover {
+  background-color: #383838;
+}
+
+/* Column widths for Songs table */
+.songs-table th:nth-child(1),
+.songs-table td:nth-child(1) {
+  width: 5%;
+}
+
+.songs-table th:nth-child(2),
+.songs-table td:nth-child(2) {
+  width: 20%;
+}
+
+.songs-table th:nth-child(3),
+.songs-table td:nth-child(3) {
+  width: 15%;
+}
+
+.songs-table th:nth-child(4),
+.songs-table td:nth-child(4) {
+  width: 15%;
+}
+
+.songs-table th:nth-child(5),
+.songs-table td:nth-child(5) {
+  width: 15%;
+}
+
+.songs-table th:nth-child(6),
+.songs-table td:nth-child(6) {
+  width: 8%;
+}
+
+.songs-table th:nth-child(7),
+.songs-table td:nth-child(7) {
+  width: 8%;
+}
+
+.songs-table th:nth-child(8),
+.songs-table td:nth-child(8) {
+  width: 14%;
+}
+
+/* Table styles for DJs tab */
+.djs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.djs-table th,
+.djs-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+.djs-table th {
+  background-color: #333;
+  color: #bbb;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.djs-table td {
+  color: #bbb;
+}
+
+.djs-table tr:hover {
+  background-color: #383838;
+}
+
+/* Column widths for DJs table */
+.djs-table th:nth-child(1),
+.djs-table td:nth-child(1) {
+  width: 10%;
+}
+
+.djs-table th:nth-child(2),
+.djs-table td:nth-child(2) {
+  width: 25%;
+}
+
+.djs-table th:nth-child(3),
+.djs-table td:nth-child(3) {
+  width: 25%;
+}
+
+.djs-table th:nth-child(4),
+.djs-table td:nth-child(4) {
+  width: 15%;
+}
+
+.djs-table th:nth-child(5),
+.djs-table td:nth-child(5) {
+  width: 10%;
+}
+
+.djs-table th:nth-child(6),
+.djs-table td:nth-child(6) {
+  width: 15%;
+}
+
+/* Table styles for Genres tab */
+.genres-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.genres-table th,
+.genres-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+.genres-table th {
+  background-color: #333;
+  color: #bbb;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.genres-table td {
+  color: #bbb;
+}
+
+.genres-table tr:hover {
+  background-color: #383838;
+}
+
+/* Column widths for Genres table */
+.genres-table th:nth-child(1),
+.genres-table td:nth-child(1) {
+  width: 20%;
+}
+
+.genres-table th:nth-child(2),
+.genres-table td:nth-child(2) {
+  width: 60%;
+}
+
+.genres-table th:nth-child(3),
+.genres-table td:nth-child(3) {
+  width: 20%;
+}
+
+/* Table styles for Playlists tab */
+.playlists-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.playlists-table th,
+.playlists-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+.playlists-table th {
+  background-color: #333;
+  color: #bbb;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.playlists-table td {
+  color: #bbb;
+}
+
+.playlists-table tr:hover {
+  background-color: #383838;
+  cursor: pointer;
+}
+
+.playlists-table tr.selected {
+  background-color: #444;
+}
+
+/* Column widths for Playlists table */
+.playlists-table th:nth-child(1),
+.playlists-table td:nth-child(1) {
+  width: 10%;
+}
+
+.playlists-table th:nth-child(2),
+.playlists-table td:nth-child(2) {
+  width: 30%;
+}
+
+.playlists-table th:nth-child(3),
+.playlists-table td:nth-child(3) {
+  width: 20%;
+}
+
+.playlists-table th:nth-child(4),
+.playlists-table td:nth-child(4) {
+  width: 20%;
+}
+
+.playlists-table th:nth-child(5),
+.playlists-table td:nth-child(5) {
+  width: 20%;
+}
+
+/* Playlist songs section */
+.playlist-songs {
+  margin-top: 20px;
+}
+
+/* Genre controls and selector */
+.genre-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.genre-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.genre-selector label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.genre-selector select {
+  padding: 5px 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.genre-selector select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.content-list {
+  list-style: none;
+  padding: 0;
+}
+
+.content-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content-list li span {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button.activate {
+  background-color: #28a745;
+  color: white;
+}
+
+.action-button.activate:hover {
+  background-color: #218838;
+}
+
+.action-button.deactivate {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.action-button.deactivate:hover {
+  background-color: #e0a800;
+}
+
+.action-button.feature {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.action-button.feature:hover {
+  background-color: #138496;
+}
+
+.action-button.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.action-button.delete:hover {
+  background-color: #c82333;
+}
+
+.action-button.create {
+  background-color: #007bff;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.action-button.create:hover {
+  background-color: #0056b3;
+}
+
+.logout-button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+/* Chart container */
+.chart-container {
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  max-width: 100%;
+  height: 300px;
+}
+
+/* Chart type selector */
+.chart-type-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chart-type-selector label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.chart-type-selector select {
+  padding: 5px 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chart-type-selector select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Adjust log controls for better spacing */
+.log-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.log-controls > * {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Logs table styles */
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.logs-table th,
+.logs-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+.logs-table th {
+  background-color: #333;
+  color: #bbb;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.logs-table td {
+  color: #bbb;
+}
+
+.logs-table tr:hover {
+  background-color: #383838;
+}
+
+/* Column widths for Logs table */
+.logs-table th:nth-child(1),
+.logs-table td:nth-child(1) {
+  width: 10%;
+}
+
+.logs-table th:nth-child(2),
+.logs-table td:nth-child(2) {
+  width: 10%;
+}
+
+.logs-table th:nth-child(3),
+.logs-table td:nth-child(3) {
+  width: 15%;
+}
+
+.logs-table th:nth-child(4),
+.logs-table td:nth-child(4) {
+  width: 15%;
+}
+
+.logs-table th:nth-child(5),
+.logs-table td:nth-child(5) {
+  width: 10%;
+}
+
+.logs-table th:nth-child(6),
+.logs-table td:nth-child(6) {
+  width: 30%;
+}
+
+.logs-table th:nth-child(7),
+.logs-table td:nth-child(7) {
+  width: 20%;
+}
+
+/* Ensure logs table and container remain consistent */
+.logs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.log-group {
+  margin-bottom: 20px;
+}
+
+.log-date-header {
+  background-color: #333;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.logs-container {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #444;
+  border-radius: 8px;
+}
+
+.logs-table th:hover,
+.logs-table th {
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px; /* Giảm chiều cao trên thiết bị di động */
+  }
+
+  .log-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .log-filter,
+  .search-bar,
+  .chart-type-selector {
+    width: 100%;
+  }
+
+  .logs-table th,
+  .logs-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  /* Adjust column widths for logs table on mobile */
+  .logs-table th:nth-child(1),
+  .logs-table td:nth-child(1) {
+    width: 10%;
+  }
+
+  .logs-table th:nth-child(2),
+  .logs-table td:nth-child(2) {
+    width: 15%;
+  }
+
+  .logs-table th:nth-child(3),
+  .logs-table td:nth-child(3) {
+    width: 20%;
+  }
+
+  .logs-table th:nth-child(4),
+  .logs-table td:nth-child(4) {
+    width: 15%;
+  }
+
+  .logs-table th:nth-child(5),
+  .logs-table td:nth-child(5) {
+    width: 15%;
+  }
+
+  .logs-table th:nth-child(6),
+  .logs-table td:nth-child(6) {
+    width: 25%;
+  }
+
+  .logs-table th:nth-child(7),
+  .logs-table td:nth-child(7) {
+    width: 25%;
+  }
+
+  .users-table th,
+  .users-table td,
+  .songs-table th,
+  .songs-table td,
+  .djs-table th,
+  .djs-table td,
+  .genres-table th,
+  .genres-table td,
+  .playlists-table th,
+  .playlists-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

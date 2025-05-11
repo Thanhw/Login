@@ -1,0 +1,262 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1a1a1a;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar-shrunk {
+  padding: 5px 20px;
+  background-color: rgba(26, 26, 26, 0.9);
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.navbar-search {
+  flex-grow: 1;
+  position: relative;
+  margin: 0 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+}
+
+.navbar-search input {
+  width: 100%;
+  padding: 8px 10px 8px 44px;
+  border: none;
+  border-radius: 20px;
+  background-color: #333;
+  color: #fff;
+  font-size: 14px;
+}
+
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-icon-container {
+  position: relative;
+}
+
+.auth-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #0056b3;
+  border-radius: 50%;
+  padding: 5px;
+  border: 2px solid #003d80;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.auth-icon:hover {
+  background-color: #003d80;
+  transform: scale(1.1);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  color: #fff;
+  z-index: 1000;
+  min-width: 120px;
+}
+
+.dropdown-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  border-radius: 3px;
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  color: #fff;
+  z-index: 1000;
+}
+
+.search-result-item {
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.search-error {
+  padding: 5px 0;
+  color: #ff5555;
+}
+
+/* Modal styles */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.modal-content {
+  background-color: #1a1a1a; /* Nền đen */
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff; /* Chữ trắng */
+}
+
+.modal-error {
+  color: #ff5555; /* Màu đỏ */
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-field label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #cccccc; /* Xám nhạt cho nhãn */
+}
+
+.modal-field input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #444444; /* Viền xám đậm */
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #333333; /* Nền xám đậm */
+  color: #ffffff; /* Chữ trắng */
+}
+
+.modal-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-options label {
+  font-size: 14px;
+  color: #cccccc;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-options input[type="checkbox"] {
+  margin: 0;
+}
+
+.modal-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff; /* Màu xanh */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+  background-color: #0056b3; /* Xanh đậm hơn khi hover */
+}
+
+.modal-footer {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.modal-footer span {
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #cccccc;
+}

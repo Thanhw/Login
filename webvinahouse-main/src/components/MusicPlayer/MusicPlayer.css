@@ -1,0 +1,236 @@
+.music-player {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 90px;
+    background-color: #d1d1d1; border-top: 1px solid #282828;
+    z-index: 1002; transition: height 0.3s ease;
+  }
+  .music-player.empty .player-content { /* Style cho player trống */
+    justify-content: center; color: #666; font-style: italic;   
+  }
+  .player-content {
+    height: 100%; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px;
+    opacity: 1; transition: opacity 0.3s ease;
+  }
+  .track-info {
+    display: flex; align-items: center; flex-basis: 30%; min-width: 180px;
+    overflow: hidden; /* Ngăn tràn nếu tên quá dài */
+  }
+  .track-artwork {
+    width: 56px; height: 56px; margin-right: 14px;
+    object-fit: cover; background-color: #333; flex-shrink: 0;
+  }
+  .track-details { overflow: hidden; white-space: nowrap; }
+  .track-title {
+    font-size: 14px; font-weight: 400; color: #333 ; margin: 0 0 4px 0;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .track-artist {
+    font-size: 12px; font-weight: 300; color: #333 ; margin: 0;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .player-controls {
+    flex-basis: 40%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; max-width: 722px;
+  }
+  .controls-top {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 8px;
+  }
+  .controls-bottom.progress-container {
+    display: flex; align-items: center; width: 100%; gap: 8px;
+  }
+  .time {
+    font-size: 11px; color: #333 ; min-width: 40px; text-align: center; user-select: none;
+  }
+  .progress-bar {
+    flex-grow: 1; height: 4px; border-radius: 2px; background-color: #535353;
+    cursor: pointer; appearance: none; -webkit-appearance: none; outline: none;
+    overflow: hidden; background-image: linear-gradient(#b3b3b3, #b3b3b3);
+    background-repeat: no-repeat; background-size: 0% 100%;
+    transition: background-size 0.1s linear;
+  }
+  .progress-bar::-webkit-slider-thumb {
+    appearance: none; -webkit-appearance: none; width: 12px; height: 12px;
+    background-color: #fff; border-radius: 50%; cursor: pointer;
+    opacity: 0; transition: opacity 0.2s ease;
+  }
+  .progress-container:hover .progress-bar::-webkit-slider-thumb { opacity: 1; }
+  .progress-bar::-moz-range-thumb {
+     width: 12px; height: 12px; background-color: #fff; border-radius: 50%;
+     border: none; cursor: pointer; opacity: 0; transition: opacity 0.2s ease;
+  }
+  .progress-container:hover .progress-bar::-moz-range-thumb { opacity: 1; }
+  .progress-container:hover .progress-bar {
+    background-image: linear-gradient(#FFD700, #FFD700); height: 6px;
+  }
+  
+  /* Style chung cho control button và SVG */
+  .control-button {
+      background: none; border: none; color: #b3b3b3;
+      cursor: pointer; padding: 0; display: flex; align-items: center;
+      justify-content: center; line-height: 0;
+  }
+  .control-button svg {
+      height: 16px; width: 16px; fill: currentColor; opacity: 0.7;
+      transition: opacity 0.2s ease, color 0.2s ease, fill 0.2s ease;
+  }
+  .control-button:hover { color: #fff; }
+  .control-button:hover svg { opacity: 1; }
+  
+  /* Trạng thái active (Shuffle, Repeat) */
+  .control-button.active { /* color: #1DB954; */ } /* Màu đặt ở SVG fill */
+  .control-button.active svg { opacity: 1; fill: #1DB954; }
+  
+  /* Nút Play/Pause */
+  .play-pause svg { height: 32px; width: 32px; opacity: 1; fill: #fff; }
+  .play-pause:hover svg { transform: scale(1.05); }
+  
+  /* Actions bên phải */
+  .player-actions {
+    flex-basis: 30%; display: flex; align-items: center;
+    justify-content: flex-end; gap: 16px; min-width: 180px;
+  }
+  .player-actions .control-button svg { height: 18px; width: 18px;}
+  
+  /* Nút Favorite đã chọn */
+  .control-button.favorited { color: #E91E63; } /* Màu hồng */
+  .control-button.favorited svg { opacity: 1; fill: #E91E63; }
+  
+  /* === THÊM MỚI: Nút Add to Playlist đã active === */
+  /* Áp dụng class này cho button khi bài hát đã được thêm vào playlist */
+  .control-button.added-to-playlist {
+      color: #E91E63; /* Màu hồng */
+  }
+  .control-button.added-to-playlist svg {
+       opacity: 1;
+       fill: #E91E63; /* Đảm bảo fill màu hồng */
+  }
+  /* ============================================== */
+  
+  
+  /* Volume Control */
+  .volume-control { position: relative; display: flex; align-items: center; }
+  .volume-slider-container {
+    position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+    background-color: #282828; padding: 10px 5px; border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); opacity: 0; visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease; z-index: 10;
+  }
+  .volume-control:hover .volume-slider-container { opacity: 1; visibility: visible; }
+  .volume-slider {
+    appearance: none; -webkit-appearance: none; width: 80px; height: 4px;
+    border-radius: 2px; background-color: #535353; cursor: pointer; outline: none;
+    background-image: linear-gradient(#fff, #fff); background-repeat: no-repeat;
+  }
+  .volume-slider::-webkit-slider-thumb {
+    appearance: none; -webkit-appearance: none; width: 12px; height: 12px;
+    background-color: #fff; border-radius: 50%; cursor: pointer;
+  }
+  .volume-slider::-moz-range-thumb {
+    width: 12px; height: 12px; background-color: #fff;
+    border-radius: 50%; border: none; cursor: pointer;
+  }
+  
+  /* Queue */
+  .queue-container { position: relative; }
+  .queue-list {
+    position: absolute; bottom: 50px; right: 0; width: 300px; max-height: 400px;
+    overflow-y: auto; background-color: #282828; border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5); padding: 10px; color: #fff;
+    z-index: 1003; scrollbar-width: thin; scrollbar-color: #555 #282828;
+  }
+  .queue-list::-webkit-scrollbar { width: 8px; }
+  .queue-list::-webkit-scrollbar-track { background: #282828; }
+  .queue-list::-webkit-scrollbar-thumb { background-color: #555; border-radius: 4px; }
+  .queue-list h4 {
+    margin: 0 0 10px 5px; font-size: 14px; color: #b3b3b3; text-transform: uppercase;
+  }
+  .queue-item {
+    display: flex; align-items: center; padding: 8px 5px;
+    border-radius: 4px; margin-bottom: 5px; gap: 8px;
+  }
+  .queue-item:hover { background-color: #3a3a3a; }
+  .queue-item.current { background-color: #333; }
+  .playing-indicator { width: 16px; height: 16px; }
+  .queue-title {
+    flex-grow: 1; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .queue-title.current-title { color: #1DB954; font-weight: 500; }
+  .queue-artist { font-size: 11px; color: #b3b3b3; margin-right: 10px; }
+  
+  /* Style icon SVG trong queue */
+  .queue-action-button {
+      background: none; border: none; padding: 0; cursor: pointer;
+      flex-shrink: 0; line-height: 0; color: #b3b3b3;
+  }
+  .queue-action-button svg {
+      height: 16px; width: 16px; opacity: 0.7; fill: currentColor;
+      transition: opacity 0.2s ease, color 0.2s ease, fill 0.2s ease;
+  }
+  .queue-action-button:hover { color: #fff; }
+  .queue-action-button:hover svg { opacity: 1; }
+  .queue-action-button.favorited { color: #E91E63; }
+  .queue-action-button.favorited svg { opacity: 1; fill: #E91E63; }
+
+  .queue-container .control-button {
+    color: #333; /* Chỉ đặt màu xám đậm/đen cho nút trong .queue-container */
+}
+/* --- THÊM MỚI: Đặt màu hover riêng cho nút Queue --- */
+.queue-container .control-button:hover {
+    color: #000; /* Chỉ đặt màu đen khi hover nút trong .queue-container */
+}
+  
+  /* === THÊM MỚI: Nút Add to Playlist trong queue đã active === */
+  .queue-action-button.added-to-playlist { color: #E91E63; }
+  .queue-action-button.added-to-playlist svg { opacity: 1; fill: #E91E63; }
+  /* ======================================================== */
+  
+  .queue-action-button.remove { color: #888; }
+  .queue-action-button.remove svg { opacity: 0.5; }
+  .queue-action-button.remove:hover { color: #fff; }
+  .queue-action-button.remove:hover svg { opacity: 1; }
+  .empty-queue { text-align: center; font-size: 13px; color: #777; padding: 15px 0; }
+  
+  
+  /* Trạng thái thu nhỏ */
+  .music-player.player-shrunk { height: 50px; }
+  .music-player.player-shrunk .player-content { opacity: 0.6; }
+  .music-player.player-shrunk .track-artwork { width: 30px; height: 30px; }
+  .music-player.player-shrunk .track-details .track-artist { display: none; }
+  .music-player.player-shrunk .track-details .track-title { font-size: 12px;}
+  .music-player.player-shrunk .controls-top { margin-bottom: 2px; }
+  .music-player.player-shrunk .controls-bottom .time { display: none; }
+  .music-player.player-shrunk .controls-bottom .progress-bar { height: 3px; }
+  .music-player.player-shrunk .play-pause svg { height: 24px; width: 24px; }
+  .music-player.player-shrunk .control-button svg { height: 14px; width: 14px; }
+  .music-player.player-shrunk .player-actions .control-button svg { height: 16px; width: 16px; }
+  
+  /* Reset khi hover vào player thu nhỏ */
+  .music-player:hover { height: 90px; }
+  .music-player:hover .player-content { opacity: 1; }
+  .music-player:hover .track-artwork { width: 56px; height: 56px; }
+  .music-player:hover .track-details .track-artist { display: block; }
+  .music-player:hover .track-details .track-title { font-size: 14px; }
+  .music-player:hover .controls-top { margin-bottom: 8px; }
+  .music-player:hover .controls-bottom .time { display: block; }
+  .music-player:hover .controls-bottom .progress-bar { height: 4px; }
+  .music-player:hover .play-pause svg { height: 32px; width: 32px; }
+  .music-player:hover .control-button svg { height: 16px; width: 16px; }
+  .music-player:hover .player-actions .control-button svg { height: 18px; width: 18px; }
+
+  .playing-indicator-container {
+  width: 16px; /* Phải khớp với width của SVG icon */
+  height: 16px; /* Phải khớp với height của SVG icon */
+  display: flex; /* Giúp căn giữa icon nếu cần */
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Không co lại */
+}
+
+/* Style cho SVG sóng nhạc bên trong container */
+.playing-indicator-container .soundwave-icon {
+  /* Kích thước đã được set bởi props width/height hoặc thẻ SVG */
+  /* Màu sắc đã được set bởi props color hoặc thẻ SVG */
+  /* Animation đã được định nghĩa trong AnimatedSoundwaveIcon.css */
+  /* Đảm bảo nó hiển thị */
+  display: block;
+}

@@ -1,0 +1,83 @@
+/* src/pages/DJListPage/DJListPage.css */
+
+.dj-list-page-container {
+    padding: 25px 35px 50px 35px; /* Giống các trang khác */
+}
+
+.dj-list-loading,
+.dj-list-error {
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa;
+}
+
+/* Breadcrumb (Tương tự trang DJ cá nhân) */
+.breadcrumb {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 15px; /* Giảm khoảng cách dưới một chút */
+}
+.breadcrumb a { color: #ccc; text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+
+/* Tiêu đề trang */
+.dj-list-title {
+    font-size: 24px; /* Có thể điều chỉnh */
+    font-weight: 500;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+/* Lưới DJ */
+.dj-list-grid {
+    display: grid;
+    /* --- QUAN TRỌNG: Tạo 4 cột bằng nhau --- */
+    grid-template-columns: repeat(4, 1fr);
+    /* Khoảng cách giữa các item DJ */
+    gap: 30px 25px; /* Khoảng cách dọc 30px, ngang 25px (điều chỉnh nếu cần) */
+}
+
+/* Style cho từng item DJ trong grid */
+.dj-grid-item {
+    text-align: center; /* Căn giữa tên DJ */
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    padding: 10px; /* Thêm padding nhỏ nếu muốn có hiệu ứng nền khi hover */
+    border-radius: 8px;
+}
+
+.dj-grid-item:hover {
+    transform: scale(1.03); /* Hiệu ứng phóng to nhẹ khi hover */
+    background-color: rgba(255, 255, 255, 0.05); /* Nền mờ nhẹ khi hover */
+}
+
+.dj-grid-image {
+    /* Kích thước ảnh vuông, điều chỉnh cho phù hợp với 4 cột */
+    width: 50%; /* Chiếm hết chiều rộng của cột grid */
+    /* height: auto; */ /* Để giữ tỉ lệ vuông, dùng aspect-ratio */
+    aspect-ratio: 1 / 1; /* Giữ tỉ lệ 1:1 (vuông) */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    border-radius: 50%; /* Bo tròn như hình ảnh bạn cung cấp */
+    /* hoặc border-radius: 8px; nếu muốn ảnh vuông bo góc */
+    margin-bottom: 12px; /* Khoảng cách giữa ảnh và tên */
+    background-color: #333; /* Màu nền placeholder */
+    display: block; /* Loại bỏ khoảng trắng thừa dưới ảnh */
+    margin-left: auto;
+    margin-right: auto;
+     /* Có thể set max-width nếu muốn giới hạn kích thước ảnh tối đa */
+     /* max-width: 200px; */
+}
+
+.dj-grid-name {
+    font-size: 16px;
+    font-weight: 400; /* Inter Regular */
+    color: #fff;
+    margin: 0;
+    /* Giới hạn text nếu tên quá dài */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

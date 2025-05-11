@@ -1,0 +1,41 @@
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto; /* Cho phép scroll ngang */
+    /* overflow-x: overlay; */ /* Option: làm scrollbar đè lên content */
+    gap: 90px; /* Khoảng cách giữa các item */
+    padding-bottom: 15px; /* Khoảng trống cho scrollbar (nếu hiện) và tên */
+    /* Ẩn scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE 10+ */
+  }
+  .horizontal-scroll-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+  }
+  
+  .scroll-item {
+    flex-shrink: 0; /* Ngăn item bị co lại */
+    width: 111px; /* Chiều rộng cố định */
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .scroll-item-image {
+    width: 111px;
+    height: 130px;
+    object-fit: cover; /* Cắt ảnh nếu cần */
+    margin-bottom: 8px; /* Khoảng cách với tên */
+    display: block; /* Tránh khoảng trắng thừa */
+    background-color: #444; /* Màu nền placeholder */
+  }
+  
+  .scroll-item-name {
+    font-size: 16px;
+    color: #FFFFFF;
+    margin: 0;
+    width: 125px; /* Giới hạn chiều rộng tên */
+    margin-left: auto; /* Căn giữa nếu width scroll-item lớn hơn */
+    margin-right: auto;
+    overflow: hidden; /* Ẩn phần thừa */
+    text-overflow: ellipsis; /* Hiển thị ... */
+    white-space: nowrap; /* Không xuống dòng */
+  }
