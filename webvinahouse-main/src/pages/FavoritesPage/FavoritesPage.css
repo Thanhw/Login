@@ -1,0 +1,52 @@
+/* src/pages/FavoritesPage/FavoritesPage.css */
+/* Copy nội dung từ GenrePage.css và đổi tên class nếu cần */
+
+.favorites-page-container { /* Thay thế .genre-page-container */
+    padding: 25px 35px 50px 35px;
+  }
+  
+  .favorites-page-loading, /* Thay thế .genre-page-loading */
+  .favorites-page-error { /* Thay thế .genre-page-error */
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa;
+  }
+  
+  .favorites-page-error a { /* Style cho link đăng nhập */
+      color: #61dafb; /* Màu React ví dụ */
+      text-decoration: underline;
+  }
+  
+  .breadcrumb {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 15px;
+  }
+  .breadcrumb a { color: #ccc; text-decoration: none; }
+  .breadcrumb a:hover { color: #fff; }
+  
+  .favorites-title { /* Thay thế .genre-title */
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+  
+  .favorites-songs-grid { /* Thay thế .genre-songs-grid */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 cột */
+    gap: 18px 30px;
+  }
+  
+  /* Nút Xem Thêm (nếu dùng phân trang) */
+  .load-more-button.favorites-load-more {
+    background: none; border: none; color: #FFFFFF;
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    font-weight: 400; cursor: pointer; margin-top: 30px;
+    padding: 10px 0; display: block; margin-left: auto;
+    margin-right: auto; width: fit-content; text-transform: uppercase;
+  }
+  .load-more-button.favorites-load-more:hover:not(:disabled) { color: #ccc; }
+  .load-more-button.favorites-load-more:disabled { color: #666; cursor: not-allowed; }

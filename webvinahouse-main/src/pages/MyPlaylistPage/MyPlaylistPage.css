@@ -1,0 +1,74 @@
+/* src/pages/MyPlaylistPage/MyPlaylistPage.css */
+
+/* ĐỔI TÊN CÁC CLASS CHO NHẤT QUÁN */
+.myplaylist-page-container {
+    padding: 25px 35px 50px 35px;
+  }
+  
+  .myplaylist-page-loading,
+  .myplaylist-page-error {
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #aaa; /* Giữ màu xám nếu theme tối, hoặc #555 nếu theme sáng */
+  }
+  
+  .myplaylist-page-error a {
+      color: #61dafb; /* Hoặc màu link bạn muốn */
+      text-decoration: underline;
+  }
+  
+  .breadcrumb {
+    font-size: 14px;
+    color: #aaa; /* Hoặc #666 nếu theme sáng */
+    margin-bottom: 15px;
+  }
+  .breadcrumb a {
+    color: #ccc; /* Hoặc #333 nếu theme sáng */
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: #fff; /* Hoặc #000 nếu theme sáng */
+  }
+  
+  .myplaylist-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff; /* Hoặc #333 nếu theme sáng */
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+  
+  .myplaylist-songs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Vẫn là 2 cột */
+    gap: 18px 30px;
+  }
+  
+  /* Style cho MusicItem được kế thừa */
+  /* Nút Xem Thêm nếu có */
+  /*
+  .load-more-button.myplaylist-load-more {
+    background: none;
+    border: none;
+    color: #FFFFFF; // Hoặc #333 nếu theme sáng
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    margin-top: 30px;
+    padding: 10px 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    text-transform: uppercase;
+  }
+  .load-more-button.myplaylist-load-more:hover:not(:disabled) {
+    color: #ccc; // Hoặc #555 nếu theme sáng
+  }
+  .load-more-button.myplaylist-load-more:disabled {
+    color: #666;
+    cursor: not-allowed;
+  }
+  */

@@ -12,6 +12,8 @@ import GenrePage from './pages/GenrePage/GenrePage';
 import PlaylistPage from './pages/PlaylistPage/PlaylistPage';
 import DJPage from './pages/DJPage/DJPage';
 import AuthLayout from './components/Layout/AuthLayout';
+import FavoritesPage from './pages/FavoritesPage/FavoritesPage';
+import MyPlaylistPage from './pages/MyPlaylistPage/MyPlaylistPage';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         {/* Layout cho các trang đã xác thực */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/my-playlist" element={<MyPlaylistPage />} />
           <Route path="/playlists" element={<PlaylistListPage />} />
           <Route path="/djs" element={<DJListPage />} />
           <Route path="/genre/:genreName" element={<GenrePage />} />
