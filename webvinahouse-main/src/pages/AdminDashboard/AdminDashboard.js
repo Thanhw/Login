@@ -601,7 +601,7 @@ const AdminDashboard = () => {
       const token = localStorage.getItem('token');
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-      if (token === 'fake-admin-token-123456' && storedUser.username === 'admin') {
+      if (token === 'fake-admin-token-346' && storedUser.username === 'admin') {
         setSongs(songs.filter(song => song.id !== songId));
         setLogs([...logs, { id: logs.length + 1, admin_id: storedUser.id, action: 'DELETE', target_table: 'songs', target_id: songId, details: 'No reason provided', created_at: new Date().toISOString() }]);
         return;
@@ -723,6 +723,41 @@ const AdminDashboard = () => {
   const filteredPlaylists = playlists.filter(playlist =>
     playlist.name.toLowerCase().includes(playlistSearch.toLowerCase())
   );
+
+  const getDashboardStats = () => {
+    const totalLogs = logs.length;
+    const actionsCount = {};
+    const datesCount = {};
+    const currentTime = new Date('2025-05-18T23:35:00+07:00'); // Thời gian hiện tại: 11:35 PM, 18/05/2025
+    const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 giờ trước
+
+    let recentLogsCount = 0;
+
+    logs.forEach(log => {
+      const logTime = new Date(log.created_at);
+      actionsCount[log.action] = (actionsCount[log.action] || 0) + 1;
+      const date = logTime.toLocaleDateString('vi-VN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      datesCount[date] = (datesCount[date] || 0) + 1;
+
+      // Đếm số hành động trong 24 giờ gần nhất
+      if (logTime >= twentyFourHoursAgo && logTime <= currentTime) {
+        recentLogsCount++;
+      }
+    });
+
+    const topAction = Object.entries(actionsCount).sort((a, b) => b[1] - a[1])[0];
+    const topDate = Object.entries(datesCount).sort((a, b) => b[1] - a[1])[0];
+
+    return {
+      totalLogs,
+      actionsCount,
+      topAction: topAction ? `${topAction[0]} (${topAction[1]} lần)` : 'N/A',
+      topDate: topDate ? `${topDate[0]} (${topDate[1]} hành động)` : 'N/A',
+      recentLogsCount,
+    };
+  };
+
+  const dashboardStats = getDashboardStats();
 
   return (
     <div className="admin-dashboard">
@@ -1265,6 +1300,39 @@ const AdminDashboard = () => {
           {activeTab === 'logs' && (
             <div className="logs-section">
               <h3>Lịch sử Hành động</h3>
+              <div className="dashboard-section">
+                <h4 className="dashboard-title">Bảng Thống Kê</h4>
+                <div className="dashboard-stats">
+                  <div className="stat-box total-logs">
+                    <div className="stat-icon">📊</div>
+                    <div className="stat-content">
+                      <h5>Tổng Số Hành Động</h5>
+                      <p>{dashboardStats.totalLogs}</p>
+                    </div>
+                  </div>
+                  <div className="stat-box top-action">
+                    <div className="stat-icon">🏆</div>
+                    <div className="stat-content">
+                      <h5>Hành Động Phổ Biến Nhất</h5>
+                      <p>{dashboardStats.topAction}</p>
+                    </div>
+                  </div>
+                  <div className="stat-box top-date">
+                    <div className="stat-icon">📅</div>
+                    <div className="stat-content">
+                      <h5>Ngày Hoạt Động Cao Nhất</h5>
+                      <p>{dashboardStats.topDate}</p>
+                    </div>
+                  </div>
+                  <div className="stat-box recent-logs">
+                    <div className="stat-icon">⏳</div>
+                    <div className="stat-content">
+                      <h5>Hành Động 24h Gần Nhất</h5>
+                      <p>{dashboardStats.recentLogsCount}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="log-controls">
                 <div className="log-filter">
                   <label htmlFor="action-filter">Lọc theo Hành động: </label>
