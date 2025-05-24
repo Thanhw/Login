@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, } from 'react-router-dom';
-// import apiClient from '../../services/api'; // Import nếu dùng axios và đã cấu hình
+ import apiClient from '../../services/api'; // Import nếu dùng axios và đã cấu hình
 import Slideshow from '../../components/Slideshow/Slideshow';
 import CategorySection from '../../components/CategorySection/CategorySection';
 import './HomePage.css';
@@ -11,7 +11,12 @@ import slideImg2 from '../../assets/slide-img2.png';
 import slideImg3 from '../../assets/slide-img3.png';
 import slideImg4 from '../../assets/slide-img4.png';
 import slideImg5 from '../../assets/slide-img5.jpeg';
+import axios from "axios";
+import MusicPlayer from "../../components/MusicPlayer/MusicPlayer";
+import {useMusicPlayer} from "../../store/useMusicPlayer";
 function HomePage() {
+    const setMusic = useMusicPlayer((state) => state.setMusic)
+
   // State để lưu dữ liệu từ API hoặc dữ liệu giả lập
   const [playlists, setPlaylists] = useState([]);
   const [djs, setDjs] = useState([]);
@@ -23,24 +28,50 @@ function HomePage() {
   // useEffect để fetch dữ liệu hoặc thiết lập dữ liệu giả lập khi component mount
   useEffect(() => {
     // // ---- BỎ COMMENT PHẦN NÀY KHI CÓ API THẬT ----
-    // const fetchData = async () => {
-    //   try {
-    //     // Gọi nhiều API cùng lúc (ví dụ)
-    //     // const [playlistRes, djRes, genresRes] = await Promise.all([
-    //     //   apiClient.get('/playlists/featured?limit=8'), // Lấy 8 playlist
-    //     //   apiClient.get('/djs/featured?limit=8'),       // Lấy 8 DJ
-    //     //   apiClient.get('/genres/homepage')           // Lấy dữ liệu genres cho trang chủ
-    //     // ]);
-    //     // // backend: Đảm bảo API trả về đúng số lượng và cấu trúc dữ liệu
-    //     // setPlaylists(playlistRes.data);
-    //     // setDjs(djRes.data);
-    //     // setGenresData(genresRes.data);
-    //   } catch (error) {
-    //     console.error("Lỗi fetch dữ liệu trang chủ:", error);
-    //     // Xử lý lỗi, có thể hiển thị thông báo cho người dùng
-    //   }
-    // };
-    // fetchData();
+    const fetchData = async () => {
+      try {
+        // Gọi nhiều API cùng lúc (ví dụ)
+        const [playlistRes, djRes, genresRes] = await Promise.all([
+          apiClient.get('/playlists?limit=8'), // Lấy 8 playlist
+            apiClient.get('/artists?limit=6'),       // Lấy 8 DJ
+           apiClient.get('/genres?limit=6')           // Lấy dữ liệu genres cho trang chủ
+        ]);
+        // // backend: Đảm bảo API trả về đúng số lượng và cấu trúc dữ liệu
+          const playlistVisible = playlistRes.data.map(playlist => ({
+              ...playlist,
+              image: playlist.cover_image_url,  // assign cover_image_url to image for UI
+          }));
+          const djVisible = djRes.data.map(dj => ({
+              ...dj,
+              image: dj.image_url,  // assign cover_image_url to image for UI
+          }));
+
+          const genreSongs = await  Promise.all(genresRes.data.map(genre =>
+              apiClient.get(`/songs?genres=${encodeURIComponent(genre.name)}`)
+          ));
+
+          // 4. Tạo object: { 'GENRE NAME': [songs] }
+          const genresWithSongs = Object.fromEntries(
+              genresRes.data.map((genre, idx) => [
+                  genre.name,
+                  genreSongs[idx].data.map(song => ({
+                      id: song.id,
+                      title: song.title,
+                      artist: song.artists?.[0]?.name || '', // Lấy nghệ sĩ đầu tiên
+                      image: song.image_url, // Hoặc 'song.song_image_url' nếu field là vậy,
+                      song_url: song.song_file_url
+                  }))
+              ])
+          );
+         setPlaylists(playlistVisible);
+         setDjs(djVisible);
+         setGenresData(genresWithSongs);
+      } catch (error) {
+        console.error("Lỗi fetch dữ liệu trang chủ:", error);
+        // Xử lý lỗi, có thể hiển thị thông báo cho người dùng
+      }
+    };
+    fetchData();
     // // ----------------------------------------------
 
 
@@ -48,16 +79,16 @@ function HomePage() {
     // Sử dụng dữ liệu này khi chưa có API hoặc để test giao diện
 
     // 8 Playlists giả lập
-    setPlaylists([
-      { id: 'pl1', name: 'Chill cùng Playlist này', image: '/assets/playlist-img1.png' },
-      { id: 'pl2', name: 'Nhạc Việt Remix Hay Nhất', image: '/assets/playlist-img2.png' },
-      { id: 'pl3', name: 'Acoustic Buồn', image: '/assets/playlist-img1.png' },
-      { id: 'pl4', name: 'Top Hits US-UK', image: '/assets/playlist-img2.png' },
-      { id: 'pl5', name: 'Indie Việt không thể bỏ lỡ', image: '/assets/playlist-img1.png' },
-      { id: 'pl6', name: 'Nhạc Hoa Lời Việt Gây Nghiện', image: '/assets/playlist-img2.png' },
-      { id: 'pl7', name: 'Rap Việt Thế Hệ Mới', image: '/assets/playlist-img1.png' },
-      { id: 'pl8', name: 'EDM Quẩy Tung Nóc', image: '/assets/playlist-img2.png' },
-    ]);
+    // setPlaylists([
+    //   { id: 'pl1', name: 'Chill cùng Playlist này', image: '/assets/playlist-img1.png' },
+    //   { id: 'pl2', name: 'Nhạc Việt Remix Hay Nhất', image: '/assets/playlist-img2.png' },
+    //   { id: 'pl3', name: 'Acoustic Buồn', image: '/assets/playlist-img1.png' },
+    //   { id: 'pl4', name: 'Top Hits US-UK', image: '/assets/playlist-img2.png' },
+    //   { id: 'pl5', name: 'Indie Việt không thể bỏ lỡ', image: '/assets/playlist-img1.png' },
+    //   { id: 'pl6', name: 'Nhạc Hoa Lời Việt Gây Nghiện', image: '/assets/playlist-img2.png' },
+    //   { id: 'pl7', name: 'Rap Việt Thế Hệ Mới', image: '/assets/playlist-img1.png' },
+    //   { id: 'pl8', name: 'EDM Quẩy Tung Nóc', image: '/assets/playlist-img2.png' },
+    // ]);
 
     // 8 DJs giả lập
     setDjs([
@@ -152,7 +183,13 @@ function HomePage() {
       console.log("Phát bài hát:", song);
       // // todo: Tích hợp với MusicPlayer component
       // // Ví dụ: Gọi hàm từ Context hoặc cập nhật state chung
-      // playerContext.playTrack(song);
+      setMusic({
+          id: song.id,
+          title: song.title,
+          artist: song.artist,
+          image: song.image,
+          src: "/audio/" + song.song_url, // <--- renamed to src
+      })
   };
 
   // Render giao diện component

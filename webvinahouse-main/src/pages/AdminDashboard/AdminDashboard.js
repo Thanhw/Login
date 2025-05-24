@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './AdminDashboard.css';
+import apiClient from "../../services/api";
 
 // Đăng ký các thành phần Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -32,6 +33,70 @@ const AdminDashboard = () => {
   const [editingSong, setEditingSong] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newSong, setNewSong] = useState({
+    title: '',
+    audio_url: '',
+    image_url: '',
+    duration: '',
+    genre_id: '',
+    artist_id: ''
+  });
+  const [showCreateDJForm, setShowCreateDJForm] = useState(false);
+  const [showCreateGenreForm, setShowCreateGenreForm] = useState(false);
+  const [newGenre, setNewGenre] = useState({ name: '', image_url: '' });
+
+  const [newDJ, setNewDJ] = useState({
+    name: '',
+    image_url: '',
+    contact: '',
+  });
+  const handleCreateGenre = async () => {
+    if (!newGenre.name) {
+      alert('Vui lòng nhập tên');
+      return;
+    }
+
+    try {
+      const data = {
+        name: newGenre.name
+      }
+      await apiClient.post('/admin/create-genres', data);
+      alert('Thể loại đã được tạo!');
+      setShowCreateGenreForm(false);
+      setNewGenre({
+        name: ''
+      });
+      fetchGenres(); // Hàm reload lại danh sách bài hát
+    } catch (error) {
+      console.error('Lỗi khi tạo Genres:', error);
+      alert('Tạo Thể loại thất bại.');
+    }
+  };
+  const handleCreateDJ = async () => {
+    if (!newDJ.name) {
+      alert('Vui lòng nhập tên DJ');
+      return;
+    }
+
+    try {
+      const data = {
+        name: newDJ.name,
+        image_url: newDJ.image_url
+      }
+      await apiClient.post('/admin/create-artist', data);
+      alert('DJ đã được tạo!');
+      setShowCreateDJForm(false);
+      setNewDJ({
+        name: '',
+        image_url: ''
+      });
+      fetchDjs(); // Hàm reload lại danh sách bài hát
+    } catch (error) {
+      console.error('Lỗi khi tạo DJ:', error);
+      alert('Tạo DJ thất bại.');
+    }
+  };
 
   const getActiveTab = () => {
     const path = location.pathname;
@@ -49,7 +114,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-
+    console.log("storedUser", storedUser);
+    console.log("token", token);
     if (!token || !storedUser.isAdmin) {
       navigate('/login');
       return;
@@ -57,43 +123,43 @@ const AdminDashboard = () => {
 
     const fetchData = async () => {
       try {
-        if (token === 'fake-admin-token-123456' && storedUser.username === 'admin') {
-          setUsers([
-            { id: 1, username: 'user1', email: 'user1@example.com', is_active: true },
-            { id: 2, username: 'user2', email: 'user2@example.com', is_active: false },
-          ]);
-          setSongs([
-            { id: 1, title: 'Test Song 1', artist: 'DJ 1', genre: 'Genre 1', release_date: '2025-01-15', is_approved: true, is_featured: false },
-            { id: 2, title: 'Test Song 2', artist: 'DJ 2', genre: 'Genre 2', release_date: '2025-02-20', is_approved: false, is_featured: false },
-            { id: 3, title: 'Test Song 3', artist: 'DJ 1', genre: 'Genre 1', release_date: '2025-03-10', is_approved: true, is_featured: false },
-          ]);
-          setArtists([
-            { id: 1, name: 'DJ 1', verified: true, contact: 'dj1@example.com' },
-            { id: 2, name: 'DJ 2', verified: false, contact: '555-123-4567' },
-          ]);
-          setGenres([
-            { id: 1, name: 'Genre 1' },
-            { id: 2, name: 'Genre 2' },
-          ]);
-          setPlaylists([
-            { id: 1, name: 'Playlist 1', user_id: 1, is_public: true },
-            { id: 2, name: 'Playlist 2', user_id: 2, is_public: false },
-          ]);
-          setLogs([
-            { id: 1, admin_id: 1, action: 'ACTIVATE', target_table: 'users', target_id: 1, details: 'Activated user', created_at: '2025-03-21T15:00:00Z' },
-            { id: 2, admin_id: 1, action: 'DELETE', target_table: 'songs', target_id: 2, details: 'Removed unapproved song', created_at: '2025-03-21T10:30:00Z' },
-            { id: 3, admin_id: 1, action: 'APPROVE', target_table: 'songs', target_id: 3, details: 'Approved new song', created_at: '2025-03-22T09:15:00Z' },
-          ]);
-          return;
-        }
+        // if (token === 'fake-admin-token-123456' && storedUser.username === 'admin') {
+        //   setUsers([
+        //     { id: 1, username: 'user1', email: 'user1@example.com', is_active: true },
+        //     { id: 2, username: 'user2', email: 'user2@example.com', is_active: false },
+        //   ]);
+        //   setSongs([
+        //     { id: 1, title: 'Test Song 1', artist: 'DJ 1', genre: 'Genre 1', release_date: '2025-01-15', is_approved: true, is_featured: false },
+        //     { id: 2, title: 'Test Song 2', artist: 'DJ 2', genre: 'Genre 2', release_date: '2025-02-20', is_approved: false, is_featured: false },
+        //     { id: 3, title: 'Test Song 3', artist: 'DJ 1', genre: 'Genre 1', release_date: '2025-03-10', is_approved: true, is_featured: false },
+        //   ]);
+        //   setArtists([
+        //     { id: 1, name: 'DJ 1', verified: true, contact: 'dj1@example.com' },
+        //     { id: 2, name: 'DJ 2', verified: false, contact: '555-123-4567' },
+        //   ]);
+        //   setGenres([
+        //     { id: 1, name: 'Genre 1' },
+        //     { id: 2, name: 'Genre 2' },
+        //   ]);
+        //   setPlaylists([
+        //     { id: 1, name: 'Playlist 1', user_id: 1, is_public: true },
+        //     { id: 2, name: 'Playlist 2', user_id: 2, is_public: false },
+        //   ]);
+        //   setLogs([
+        //     { id: 1, admin_id: 1, action: 'ACTIVATE', target_table: 'users', target_id: 1, details: 'Activated user', created_at: '2025-03-21T15:00:00Z' },
+        //     { id: 2, admin_id: 1, action: 'DELETE', target_table: 'songs', target_id: 2, details: 'Removed unapproved song', created_at: '2025-03-21T10:30:00Z' },
+        //     { id: 3, admin_id: 1, action: 'APPROVE', target_table: 'songs', target_id: 3, details: 'Approved new song', created_at: '2025-03-22T09:15:00Z' },
+        //   ]);
+        //   return;
+        // }
 
         const [usersResponse, songsResponse, artistsResponse, genresResponse, playlistsResponse, logsResponse] = await Promise.all([
-          fetch('YOUR_API_ENDPOINT/admin/users', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
-          fetch('YOUR_API_ENDPOINT/admin/songs', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
-          fetch('YOUR_API_ENDPOINT/admin/artists', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
-          fetch('YOUR_API_ENDPOINT/admin/genres', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
-          fetch('YOUR_API_ENDPOINT/admin/playlists', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
-          fetch('YOUR_API_ENDPOINT/admin/logs', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
+          fetch('http://localhost:8000/api/artists', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
+          fetch('http://localhost:8000/api/songs', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
+          fetch('http://localhost:8000/api/artists', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
+          fetch('http://localhost:8000/api/genres', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
+          fetch('http://localhost:8000/api/playlists', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
+          fetch('http://localhost:8000/api/artists', { method: 'GET', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }),
         ]);
 
         const usersData = await usersResponse.json();
@@ -103,6 +169,7 @@ const AdminDashboard = () => {
         const playlistsData = await playlistsResponse.json();
         const logsData = await logsResponse.json();
 
+        console.log("songs", songsData);
         if (usersResponse.ok) setUsers(usersData);
         if (songsResponse.ok) setSongs(songsData);
         if (artistsResponse.ok) setArtists(artistsData);
@@ -116,6 +183,66 @@ const AdminDashboard = () => {
 
     fetchData();
   }, [navigate]);
+
+  const fetchGenres = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/genres', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setGenres(data); // Assuming setSongs is a useState setter
+    } catch (error) {
+      console.error('Lỗi khi fetch danh sách bài hát:', error);
+    }
+  };
+
+  const fetchSongs = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/songs', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setSongs(data); // Assuming setSongs is a useState setter
+    } catch (error) {
+      console.error('Lỗi khi fetch danh sách bài hát:', error);
+    }
+  };
+
+  const fetchDjs = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/artists', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setArtists(data); // Assuming setSongs is a useState setter
+    } catch (error) {
+      console.error('Lỗi khi fetch danh sách bài hát:', error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -209,6 +336,7 @@ const AdminDashboard = () => {
         setError(data.message || `Failed to ${action.toLowerCase()} song`);
       }
     } catch (err) {
+      console.log("err", err);
       setError('An error occurred. Please try again.');
     }
   };
@@ -400,6 +528,37 @@ const AdminDashboard = () => {
       setIsLoadingSongs(false);
     }
   };
+
+  const handleCreateSong = async () => {
+    try {
+      const data = {
+        title: newSong.title,
+        song_file_url: newSong.audio_url,
+        image_url: newSong.image_url,
+        artists: [newSong.artist_id],
+        genres: [newSong.genre_id],
+        duration: parseInt(newSong.duration, 10),
+      }
+
+      console.log("create songs", data);
+      await apiClient.post('/admin/create-song', data);
+      alert('Bài hát đã được tạo!');
+      setShowCreateForm(false);
+      setNewSong({
+        title: '',
+        audio_url: '',
+        image_url: '',
+        duration: '',
+        genre_id: '',
+        artist_id: ''
+      });
+      fetchSongs(); // Hàm reload lại danh sách bài hát
+    } catch (error) {
+      console.error('Lỗi khi tạo bài hát:', error);
+      alert('Tạo bài hát thất bại.');
+    }
+  };
+
 
   const handleAddSongToPlaylist = async () => {
     if (!selectedPlaylistId || !selectedSongToAdd) {
@@ -809,6 +968,75 @@ const AdminDashboard = () => {
           {activeTab === 'songs' && (
             <div>
               <h3>Danh sách Bài Hát</h3>
+              <button
+                  onClick={() => setShowCreateForm(true)}
+                  className="action-button create"
+              >
+                Tạo bài hát mới
+              </button>
+              {showCreateForm && (
+                  <div className="create-song-form">
+                    <h4>Thêm Bài Hát Mới</h4>
+                    <input
+                        type="text"
+                        placeholder="Tên bài hát"
+                        value={newSong.title}
+                        onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="URL bài hát"
+                        value={newSong.audio_url}
+                        onChange={(e) => setNewSong({ ...newSong, audio_url: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="URL ảnh bài hát"
+                        value={newSong.image_url}
+                        onChange={(e) => setNewSong({ ...newSong, image_url: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Thời lượng - phút (ví dụ: 120)"
+                        value={newSong.duration}
+                        onChange={(e) => setNewSong({ ...newSong, duration: e.target.value })}
+                    />
+
+                    {/* Chọn thể loại */}
+                    <select
+                        value={newSong.genre_id}
+                        onChange={(e) => setNewSong({ ...newSong, genre_id: e.target.value })}
+                    >
+                      <option value="">-- Chọn thể loại --</option>
+                      {genres.map((genre) => (
+                          <option key={genre.id} value={genre.id}>
+                            {genre.name}
+                          </option>
+                      ))}
+                    </select>
+
+                    {/* Chọn tác giả */}
+                    <select
+                        value={newSong.artist_id}
+                        onChange={(e) => setNewSong({ ...newSong, artist_id: e.target.value })}
+                    >
+                      <option value="">-- Chọn DJ --</option>
+                      {artists.map((artists) => (
+                          <option key={artists.id} value={artists.id}>
+                            {artists.name}
+                          </option>
+                      ))}
+                    </select>
+
+                    <button className="action-button create" onClick={() => handleCreateSong()}>
+                      Lưu bài hát
+                    </button>
+                    <button className="action-button delete" onClick={() => setShowCreateForm(false)}>
+                      Hủy
+                    </button>
+                  </div>
+              )}
+
               {songs.length > 0 ? (
                 <table className="songs-table">
                   <thead>
@@ -857,14 +1085,38 @@ const AdminDashboard = () => {
               <h3>Danh sách DJ</h3>
               <div className="genre-controls">
                 <button
-                  onClick={() => {
-                    const name = prompt('Tên DJ:');
-                    if (name) handleManageArtist(null, 'CREATE', name);
-                  }}
-                  className="action-button create"
+                    onClick={() => setShowCreateDJForm(true)}
+                    className="action-button create"
                 >
                   Tạo DJ mới
                 </button>
+
+                {showCreateDJForm && (
+                    <div className="create-dj-form">
+                      <h4>Thêm DJ Mới</h4>
+                      <input
+                          type="text"
+                          placeholder="Tên DJ"
+                          value={newDJ.name}
+                          onChange={(e) => setNewDJ({ ...newDJ, name: e.target.value })}
+                      />
+                      <input
+                          type="text"
+                          placeholder="URL ảnh DJ"
+                          value={newDJ.image_url}
+                          onChange={(e) => setNewDJ({ ...newDJ, image_url: e.target.value })}
+                      />
+
+                      <button className="action-button create" onClick={handleCreateDJ}>
+                        Lưu DJ
+                      </button>
+                      <button className="action-button delete" onClick={() => setShowCreateDJForm(false)}>
+                        Hủy
+                      </button>
+                    </div>
+                )}
+
+
                 <div className="search-bar">
                   <input
                     type="text"
@@ -880,8 +1132,7 @@ const AdminDashboard = () => {
                     <tr>
                       <th>ID</th>
                       <th>Tên</th>
-                      <th>Số điện thoại/Email</th>
-                      <th>Số bài hát đã tải lên</th>
+                      <th>Ảnh</th>
                       <th>Xác minh</th>
                       <th>Hành động</th>
                     </tr>
@@ -895,9 +1146,17 @@ const AdminDashboard = () => {
                       >
                         <td>{dj.id}</td>
                         <td>{dj.name}</td>
-                        <td>{dj.contact || 'N/A'}</td>
-                        <td>{getUploadedSongsCount(dj.name)}</td>
-                        <td>{dj.verified ? 'Có' : 'Không'}</td>
+                        <td>
+                          {dj.image_url ? (
+                              <img
+                                  src={dj.image_url}
+                                  alt={dj.name}
+                                  style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }}
+                              />
+                          ) : (
+                              'Không có ảnh'
+                          )}
+                        </td>                        <td>{dj.verified ? 'Có' : 'Không'}</td>
                         <td>
                           <div className="action-buttons">
                             <button onClick={(e) => { e.stopPropagation(); handleManageArtist(dj.id, 'VERIFY'); }} className="action-button activate">Xác minh</button>
@@ -921,6 +1180,7 @@ const AdminDashboard = () => {
                     className="action-button create"
                   >
                     Thêm bài hát
+
                   </button>
                   {songs.filter(song => song.artist === selectedDJ.name).length > 0 ? (
                     <table className="songs-table">
@@ -1027,14 +1287,34 @@ const AdminDashboard = () => {
               <h3>Danh sách Thể Loại</h3>
               <div className="genre-controls">
                 <button
-                  onClick={() => {
-                    const name = prompt('Tên thể loại:');
-                    if (name) handleManageGenre(null, 'CREATE', name);
-                  }}
-                  className="action-button create"
+                    onClick={() => setShowCreateGenreForm(true)}
+                    className="action-button create"
                 >
                   Tạo thể loại mới
                 </button>
+
+                {showCreateGenreForm && (
+                    <div className="create-genre-form">
+                      <h4>Thêm Thể Loại Mới</h4>
+                      <input
+                          type="text"
+                          placeholder="Tên thể loại"
+                          value={newGenre.name}
+                          onChange={(e) => setNewGenre({ ...newGenre, name: e.target.value })}
+                      />
+
+                      <button className="action-button create" onClick={handleCreateGenre}>
+                        Lưu thể loại
+                      </button>
+                      <button
+                          className="action-button delete"
+                          onClick={() => setShowCreateGenreForm(false)}
+                      >
+                        Hủy
+                      </button>
+                    </div>
+                )}
+
                 <div className="search-bar">
                   <input
                     type="text"

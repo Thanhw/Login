@@ -1,9 +1,10 @@
 // src/pages/DJPage/DJPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom'; // useParams để lấy djId từ URL, Link để tạo breadcrumb
-// import apiClient from '../../services/api'; // Import nếu dùng axios
+import apiClient from '../../services/api'; // Import nếu dùng axios
 import MusicItem from '../../components/MusicItem/MusicItem'; // Tái sử dụng component hiển thị bài hát
-import './DJPage.css'; // File CSS riêng cho trang này
+import './DJPage.css';
+import {useMusicPlayer} from "../../store/useMusicPlayer"; // File CSS riêng cho trang này
 
 function DJPage() {
   const { djId } = useParams(); // Lấy giá trị của :djId từ URL
@@ -11,6 +12,7 @@ function DJPage() {
   const [songs, setSongs] = useState([]); // State lưu danh sách bài hát
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+    const setMusic = useMusicPlayer((state) => state.setMusic)
 
   useEffect(() => {
     // Reset state khi djId thay đổi (nếu người dùng chuyển từ DJ này sang DJ khác)
@@ -23,66 +25,72 @@ function DJPage() {
     const fetchDJData = async () => {
       // // --- BỎ COMMENT KHI CÓ API ---
       // // backend: Cần API endpoint dạng /api/djs/{djId}/ để lấy thông tin chi tiết DJ (tên, ảnh, mô tả) và danh sách bài hát của họ
-      // try {
-      //   // const response = await apiClient.get(`/djs/${djId}`); // Gọi API với djId lấy từ URL
-      //   // // backend: API cần trả về object chứa thông tin DJ và mảng các bài hát
-      //   // if (response.data) {
-      //   //   setDjInfo(response.data.djInfo); // Ví dụ: { name, description, image_url }
-      //   //   setSongs(response.data.songs);   // Ví dụ: [{ id, title, artist, image }, ...]
-      //   // } else {
-      //   //   setError('Không tìm thấy dữ liệu cho DJ này.');
-      //   // }
-      // } catch (err) {
-      //   console.error("Lỗi fetch dữ liệu DJ:", err);
-      //   setError('Đã có lỗi xảy ra khi tải dữ liệu.');
-      //   // backend: Xử lý các mã lỗi cụ thể từ API nếu cần (404, 500, ...)
-      // } finally {
-      //   setIsLoading(false);
-      // }
+      try {
+        const response = await apiClient.get(`/get-artists-by-id?id=` + djId); // Gọi API với djId lấy từ URL
+        // backend: API cần trả về object chứa thông tin DJ và mảng các bài hát
+        if (response.data) {
+          setDjInfo(response.data.artist); // Ví dụ: { name, description, image_url }
+            setSongs(response.data.songs.map(song => ({
+                id: song.id,
+                title: song.title,
+                artist: song.artists?.[0]?.name || '', // Lấy nghệ sĩ đầu tiên
+                image: song.image_url, // Hoặc 'song.song_image_url' nếu field là vậy,
+                song_url: song.song_file_url
+            })));
+        } else {
+          setError('Không tìm thấy dữ liệu cho DJ này.');
+        }
+      } catch (err) {
+        console.error("Lỗi fetch dữ liệu DJ:", err);
+        setError('Đã có lỗi xảy ra khi tải dữ liệu.');
+        // backend: Xử lý các mã lỗi cụ thể từ API nếu cần (404, 500, ...)
+      } finally {
+        setIsLoading(false);
+      }
       // // --- KẾT THÚC PHẦN API THẬT ---
 
 
-       // --- DỮ LIỆU GIẢ LẬP (XÓA KHI CÓ API) ---
-        console.log("Đang fetch data cho DJ ID:", djId); // Giả lập log
-        // Giả lập độ trễ mạng
-        setTimeout(() => {
-            // Dữ liệu giả dựa trên djId (ví dụ đơn giản)
-            if (djId === 'masew' || djId === 'dj1') { // Giả sử djId là 'masew' hoặc 'dj1'
-                setDjInfo({
-                    name: 'Masew',
-                    // backend: nên cung cấp url ảnh 230x230
-                    image_url: '/assets/dj-img1.png', // Placeholder image
-                    description: 'Là một nhà sản xuất âm nhạc/Người tạo hoà âm phối khí người Việt Nam nổi tiếng với những bản phối khí bắt tai, khai thác tốt các chất liệu dân gian nhưng âm nhạc nhưng không kém phần trẻ trung và đời sống của mình.'
-                });
-                setSongs([
-                    { id: 's1', title: 'Túy Âm', artist: 'Masew x Xesi', image: '/assets/song1.png' },
-                    { id: 's2', title: 'Buồn Của Anh', artist: 'Đạt G, Masew, K-ICM', image: '/assets/song2.png' },
-                    { id: 's3', title: 'Mời Anh Vào Team Em', artist: 'Chi Pu ft. Masew', image: '/assets/song1.png' },
-                    { id: 's4', title: 'Đóa Hoa Hồng (Remix)', artist: 'Chi Pu x Masew', image: '/assets/song2.png' },
-                    { id: 's5', title: 'Yêu Em Dại Khờ (Masew Remix)', artist: 'Lou Hoàng', image: '/assets/song1.png' },
-                    { id: 's6', title: 'Ex\'s Hate Me (Masew Remix)', artist: 'Bray x Masew', image: '/assets/song2.png' },
-                    { id: 's7', title: 'Em Hơi Mệt Với Bạn Thân Anh', artist: 'Hương Giang ft. Masew', image: '/assets/song1.png' },
-                    { id: 's8', title: 'Ai Cần Ai (Masew Remix)', artist: 'Bảo Anh', image: '/assets/song2.png' },
-                    // Thêm nhiều bài hát hơn nếu cần
-                ]);
-            } else if (djId === 'hoaprox' || djId === 'dj2') { // Giả lập cho DJ khác
-                 setDjInfo({
-                    name: 'Hoaprox',
-                    image_url: '/assets/dj-img2.png',
-                    description: 'Hoaprox tên thật là Nguyễn Thái Hòa, là một nhà sản xuất âm nhạc, DJ nổi tiếng người Việt Nam. Anh được biết đến rộng rãi qua các bản hit EDM sôi động và các sản phẩm hợp tác quốc tế.'
-                });
-                 setSongs([
-                    { id: 's9', title: 'Ngẫu Hứng', artist: 'Hoaprox', image: '/assets/song1.png' },
-                    { id: 's10', title: 'I Can\'t Find You', artist: 'Hoaprox', image: '/assets/song2.png' },
-                    { id: 's11', title: 'With You', artist: 'Hoaprox ft. Nick Strand & Mio', image: '/assets/song1.png' },
-                    // ... thêm bài hát
-                 ]);
-            }
-            else {
-                 setError('Không tìm thấy thông tin cho DJ này (ID giả lập).');
-            }
-            setIsLoading(false);
-        }, 1000); // Giả lập chờ 1 giây
+       // // --- DỮ LIỆU GIẢ LẬP (XÓA KHI CÓ API) ---
+       //  console.log("Đang fetch data cho DJ ID:", djId); // Giả lập log
+       //  // Giả lập độ trễ mạng
+       //  setTimeout(() => {
+       //      // Dữ liệu giả dựa trên djId (ví dụ đơn giản)
+       //      if (djId === 'masew' || djId === 'dj1') { // Giả sử djId là 'masew' hoặc 'dj1'
+       //          setDjInfo({
+       //              name: 'Masew',
+       //              // backend: nên cung cấp url ảnh 230x230
+       //              image_url: '/assets/dj-img1.png', // Placeholder image
+       //              description: 'Là một nhà sản xuất âm nhạc/Người tạo hoà âm phối khí người Việt Nam nổi tiếng với những bản phối khí bắt tai, khai thác tốt các chất liệu dân gian nhưng âm nhạc nhưng không kém phần trẻ trung và đời sống của mình.'
+       //          });
+       //          setSongs([
+       //              { id: 's1', title: 'Túy Âm', artist: 'Masew x Xesi', image: '/assets/song1.png' },
+       //              { id: 's2', title: 'Buồn Của Anh', artist: 'Đạt G, Masew, K-ICM', image: '/assets/song2.png' },
+       //              { id: 's3', title: 'Mời Anh Vào Team Em', artist: 'Chi Pu ft. Masew', image: '/assets/song1.png' },
+       //              { id: 's4', title: 'Đóa Hoa Hồng (Remix)', artist: 'Chi Pu x Masew', image: '/assets/song2.png' },
+       //              { id: 's5', title: 'Yêu Em Dại Khờ (Masew Remix)', artist: 'Lou Hoàng', image: '/assets/song1.png' },
+       //              { id: 's6', title: 'Ex\'s Hate Me (Masew Remix)', artist: 'Bray x Masew', image: '/assets/song2.png' },
+       //              { id: 's7', title: 'Em Hơi Mệt Với Bạn Thân Anh', artist: 'Hương Giang ft. Masew', image: '/assets/song1.png' },
+       //              { id: 's8', title: 'Ai Cần Ai (Masew Remix)', artist: 'Bảo Anh', image: '/assets/song2.png' },
+       //              // Thêm nhiều bài hát hơn nếu cần
+       //          ]);
+       //      } else if (djId === 'hoaprox' || djId === 'dj2') { // Giả lập cho DJ khác
+       //           setDjInfo({
+       //              name: 'Hoaprox',
+       //              image_url: '/assets/dj-img2.png',
+       //              description: 'Hoaprox tên thật là Nguyễn Thái Hòa, là một nhà sản xuất âm nhạc, DJ nổi tiếng người Việt Nam. Anh được biết đến rộng rãi qua các bản hit EDM sôi động và các sản phẩm hợp tác quốc tế.'
+       //          });
+       //           setSongs([
+       //              { id: 's9', title: 'Ngẫu Hứng', artist: 'Hoaprox', image: '/assets/song1.png' },
+       //              { id: 's10', title: 'I Can\'t Find You', artist: 'Hoaprox', image: '/assets/song2.png' },
+       //              { id: 's11', title: 'With You', artist: 'Hoaprox ft. Nick Strand & Mio', image: '/assets/song1.png' },
+       //              // ... thêm bài hát
+       //           ]);
+       //      }
+       //      else {
+       //           setError('Không tìm thấy thông tin cho DJ này (ID giả lập).');
+       //      }
+       //      setIsLoading(false);
+       //  }, 1000); // Giả lập chờ 1 giây
        // --- KẾT THÚC DỮ LIỆU GIẢ LẬP ---
     };
 
@@ -95,11 +103,18 @@ function DJPage() {
   }, [djId]); // Gọi lại useEffect nếu djId thay đổi
 
   // Hàm xử lý khi click vào bài hát (tương tự HomePage)
-  const handlePlaySong = (song) => {
-      console.log("Phát bài hát của DJ:", song);
-      // // todo: Tích hợp với MusicPlayer component
-      // playerContext.playTrack(song);
-  };
+    const handlePlaySong = (song) => {
+        console.log("Phát bài hát:", song);
+        // // todo: Tích hợp với MusicPlayer component
+        // // Ví dụ: Gọi hàm từ Context hoặc cập nhật state chung
+        setMusic({
+            id: song.id,
+            title: song.title,
+            artist: song.artist,
+            image: song.image,
+            src: "/audio/" + song.song_url, // <--- renamed to src
+        })
+    };
 
   // Hiển thị trạng thái loading
   if (isLoading) {

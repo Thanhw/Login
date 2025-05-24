@@ -17,9 +17,12 @@ import { ReactComponent as ShuffleIcon } from '../../assets/shuffle-icon.svg';
 import { ReactComponent as CloseIcon } from '../../assets/close-icon.svg';
 
 // Import component icon sóng nhạc mới
-import AnimatedSoundwaveIcon from '../Icons/AnimatedSoundwaveIcon'; // Điều chỉnh đường dẫn nếu cần
+import AnimatedSoundwaveIcon from '../Icons/AnimatedSoundwaveIcon';
+import {useMusicPlayer} from "../../store/useMusicPlayer"; // Điều chỉnh đường dẫn nếu cần
 
 function MusicPlayer() {
+    const music = useMusicPlayer((state) => state);
+
     // --- State Variables ---
     const [currentTrack, setCurrentTrack] = useState({
         id: 't1',
@@ -87,7 +90,7 @@ function MusicPlayer() {
          } else {
              console.log("Hết danh sách chờ.");
              setIsPlaying(false);
-             setCurrentTrack(null); // Reset bài hát hiện tại nếu hết queue và không lặp lại
+             music.setMusic(null); // Reset bài hát hiện tại nếu hết queue và không lặp lại
          }
     // }, [queue, repeatMode, isShuffled, setCurrentTrack, setIsPlaying]); // Cần thêm setCurrentTrack, setIsPlaying nếu dùng chúng bên trong
     }, [queue, repeatMode, isShuffled]); // Giữ dependencies tối thiểu nếu logic state phức tạp được quản lý ở nơi khác (Context/Reducer)
@@ -97,7 +100,8 @@ function MusicPlayer() {
     // Effect để điều khiển play/pause audio
     useEffect(() => {
         const audio = audioRef.current;
-        if (!audio || !currentTrack || !currentTrack.src) {
+        console.log("Music src", music.music?.src);
+        if (!audio || !music.music || !music.music.src) {
             // Nếu không có audio element hoặc không có bài hát/đường dẫn src -> đảm bảo trạng thái là paused
             if (isPlaying) setIsPlaying(false);
             return;
@@ -111,7 +115,7 @@ function MusicPlayer() {
         } else {
             audio.pause();
         }
-    }, [isPlaying, currentTrack]); // Chạy lại khi trạng thái play hoặc bài hát thay đổi
+    }, [isPlaying, music.music]); // Chạy lại khi trạng thái play hoặc bài hát thay đổi
 
     // Effect để cập nhật volume/mute
     useEffect(() => {
@@ -155,7 +159,7 @@ function MusicPlayer() {
         const handleError = (e) => {
              console.error("Lỗi Audio Element:", e);
              // Có thể hiển thị thông báo lỗi cho người dùng
-             alert(`Không thể phát bài hát: ${currentTrack?.title || 'N/A'}. Có thể file bị lỗi hoặc không được hỗ trợ.`);
+             alert(`Không thể phát bài hát: ${music.music?.title || 'N/A'} src=${music.music.src}. Có thể file bị lỗi hoặc không được hỗ trợ.`);
              // Thử phát bài tiếp theo để không bị kẹt
              playNext();
         };
@@ -176,13 +180,13 @@ function MusicPlayer() {
             audio.removeEventListener('error', handleError); // Gỡ listener lỗi
         };
     // }, [currentTrack, playNext]); // Giữ playNext nếu muốn effect chạy lại khi logic playNext thay đổi (hiếm khi cần thiết nếu playNext dùng useCallback đúng)
-       }, [currentTrack, playNext]); // Phụ thuộc vào currentTrack và playNext (để đảm bảo handleEnded gọi đúng phiên bản mới nhất của playNext khi nó thay đổi)
+       }, [music.music, playNext]); // Phụ thuộc vào currentTrack và playNext (để đảm bảo handleEnded gọi đúng phiên bản mới nhất của playNext khi nó thay đổi)
 
     // --- Các hàm xử lý sự kiện còn lại ---
 
     // Hàm bật/tắt phát nhạc
     const togglePlayPause = () => {
-        if (!currentTrack || !currentTrack.src) {
+        if (!music.music || !music.music.src) {
              console.log("Chưa có bài hát để phát.");
              // Có thể hiện thông báo hoặc chọn bài hát đầu tiên trong queue nếu muốn
              return;
@@ -227,8 +231,8 @@ function MusicPlayer() {
         // Ví dụ: apiClient.post(`/api/tracks/${trackId}/favorite`).then(...)
 
         // Cập nhật state local (Optimistic Update)
-        if (currentTrack && currentTrack.id === trackId) {
-            setCurrentTrack(prev => ({...prev, isFavorite: !prev.isFavorite}));
+        if (music.music && music.music.id === trackId) {
+            music.setMusic(prev => ({...prev, isFavorite: !prev.isFavorite}));
         }
         setQueue(prevQueue => prevQueue.map(t =>
             t.id === trackId ? {...t, isFavorite: !t.isFavorite} : t
@@ -271,7 +275,7 @@ function MusicPlayer() {
     const playerClass = `music-player ${!isInteractingPlayer ? 'player-shrunk' : ''} ${isPlaying ? 'is-playing' : 'is-paused'}`;
 
     // Player trống nếu không có bài hát
-    if (!currentTrack) {
+    if (!music.music) {
         return (
              <div className="music-player empty">
                  <div className="player-content">
@@ -294,19 +298,21 @@ function MusicPlayer() {
             {/* Thẻ audio ẩn để phát nhạc */}
             <audio
                 ref={audioRef}
-                src={currentTrack.src}
+                 src={music.music.src}
+                //src="https://docs.google.com/uc?export=download&id=1n6oYZH6zAyHEHkNy0DcFH1BvRTVKQRw_"
                 preload="metadata" // Chỉ tải metadata ban đầu
                 // Thuộc tính loop sẽ được quản lý bởi toggleRepeatMode nếu cần
             ></audio>
+
 
             {/* Nội dung player */}
             <div className="player-content">
                 {/* Thông tin bài hát (Trái) */}
                 <div className="track-info">
-                    <img src={currentTrack.image || '/assets/default-artwork.png'} alt={currentTrack.title} className="track-artwork" />
+                    <img src={music.music.image || '/assets/default-artwork.png'} alt={music.music.title} className="track-artwork" />
                     <div className="track-details">
-                        <p className="track-title" title={currentTrack.title}>{currentTrack.title}</p>
-                        <p className="track-artist" title={currentTrack.artist}>{currentTrack.artist}</p>
+                        <p className="track-title" title={music.music.title}>{music.music.title}</p>
+                        <p className="track-artist" title={music.music.artist}>{music.music.artist}</p>
                     </div>
                 </div>
 
@@ -383,10 +389,10 @@ function MusicPlayer() {
                     </div>
                     {/* Favorite */}
                     <button
-                        className={`control-button ${currentTrack.isFavorite ? 'favorited' : ''}`}
-                        onClick={() => toggleFavorite(currentTrack.id)}
-                        title={currentTrack.isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
-                        aria-pressed={currentTrack.isFavorite}
+                        className={`control-button ${music.music.isFavorite ? 'favorited' : ''}`}
+                        onClick={() => toggleFavorite(music.music.id)}
+                        title={music.music.isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
+                        aria-pressed={music.music.isFavorite}
                     >
                         <FavoriteIcon />
                     </button>
@@ -394,7 +400,7 @@ function MusicPlayer() {
                     <button
                         // className={addToPlaylistButtonClass} // Ví dụ thêm class động
                         className={`control-button`}
-                        onClick={() => addToUserPlaylist(currentTrack.id)}
+                        onClick={() => addToUserPlaylist(music.music.id)}
                         title="Thêm vào playlist"
                     >
                         <AddToPlaylistIcon />
@@ -413,13 +419,13 @@ function MusicPlayer() {
                                     <div className={`playing-indicator-container ${isPlaying ? 'playing' : ''}`}>
                                         <AnimatedSoundwaveIcon width={16} height={16} />
                                     </div>
-                                    <span className="queue-title current-title" title={currentTrack.title}>{currentTrack.title}</span>
-                                    <span className="queue-artist" title={currentTrack.artist}>{currentTrack.artist}</span>
+                                    <span className="queue-title current-title" title={music.music.title}>{music.music.title}</span>
+                                    <span className="queue-artist" title={music.music.artist}>{music.music.artist}</span>
                                     {/* Nút fav/add trong queue cho bài hiện tại */}
-                                    <button className={`queue-action-button ${currentTrack.isFavorite ? 'favorited' : ''}`} onClick={() => toggleFavorite(currentTrack.id)} title={currentTrack.isFavorite ? "Bỏ yêu thích" : "Yêu thích"} aria-pressed={currentTrack.isFavorite}>
+                                    <button className={`queue-action-button ${music.music.isFavorite ? 'favorited' : ''}`} onClick={() => toggleFavorite(music.music.id)} title={music.music.isFavorite ? "Bỏ yêu thích" : "Yêu thích"} aria-pressed={music.music.isFavorite}>
                                         <FavoriteIcon />
                                     </button>
-                                    <button className={`queue-action-button`} onClick={() => addToUserPlaylist(currentTrack.id)} title="Thêm vào playlist">
+                                    <button className={`queue-action-button`} onClick={() => addToUserPlaylist(music.music.id)} title="Thêm vào playlist">
                                         <AddToPlaylistIcon />
                                     </button>
                                 </div>

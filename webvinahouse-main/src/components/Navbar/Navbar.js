@@ -117,10 +117,10 @@ function Navbar() {
       navigate('/admin');
     } else {
       try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch('http://localhost:8000/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ usernameEmail: loginUsernameEmail, password: loginPassword }),
+          body: JSON.stringify({ email: loginUsernameEmail, password: loginPassword }),
         });
         const data = await response.json();
         if (response.ok) {
@@ -161,8 +161,9 @@ function Navbar() {
       setRegisterError('Password must be at least 6 characters long.');
       return;
     }
+
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch('http://localhost:8000/api/create-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: registerUsername, email: registerEmail, password: registerPassword }),
@@ -173,7 +174,8 @@ function Navbar() {
         localStorage.setItem('token', data.token || 'fake-token');
         localStorage.setItem('user', JSON.stringify({ username: registerUsername, email: registerEmail }));
         closeRegisterModal();
-        navigate('/user/profile');
+        console.log("Register successful!");
+        navigate('/');
       } else {
         setRegisterError(data.message || 'Registration failed. Please try again.');
       }

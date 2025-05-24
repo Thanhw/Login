@@ -34,7 +34,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/register', { // Thay bằng URL API thực tế
+      const response = await fetch('http://localhost:8000/api/create-user', { // Thay bằng URL API thực tế
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const RegisterPage = () => {
         localStorage.setItem('token', data.token || 'fake-token'); // Ví dụ
         navigate('/login');
       } else {
-        setError(data.message || 'Registration failed. Please try again.');
+        setError(data.error || 'Registration failed. Please try again.');
       }
     } catch (err) {
       console.error('Error during registration:', err);

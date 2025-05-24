@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
@@ -9,11 +9,9 @@ import djIcon from '../../assets/dj-sidebar.png';
 import playlistIcon from '../../assets/playlist-sidebar.png';
 import favIcon from '../../assets/fav-sidebar.png';
 import myPlaylistIcon from '../../assets/my-playlist-sidebar.png';
+import apiClient from "../../services/api";
 
 // Giả sử bạn có danh sách các thể loại, DJ, Playlist từ API
-const genres = ["NHẠC VIỆT HOT", "NHẠC GÕ", "NHẠC TRÔI", "NHẠC TƯNG TỬNG", "TIKTOK REMIX", "NHẠC CỔ"];
-const djs = ["DJ A", "DJ B", "DJ C"];
-const playlists = ["Playlist 1", "Playlist 2"];
 
 // Admin management links
 const adminLinks = [
@@ -50,6 +48,52 @@ function SidebarItem({ icon, text, to, children, hasDropdown, isOpen, onClick })
 }
 
 function Sidebar({ isOpen, toggleSidebar }) {
+  const [djs, setDjs] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {
+    // Define async function inside useEffect
+    const fetchDJs = async () => {
+      try {
+        const response = await apiClient.get('/artists?limit=10');
+        setDjs(response.data || []); // Always set an array
+      } catch (err) {
+        console.error("Lỗi fetch danh sách DJ:", err);
+      }
+    };
+
+    fetchDJs();
+  }, []);
+
+  useEffect(() => {
+    // Define async function inside useEffect
+    const fetchGenres = async () => {
+      try {
+        const response = await apiClient.get('/genres?limit=10');
+        setGenres(response.data.map(genres => genres.name) || []); // Always set an array
+      } catch (err) {
+        console.error("Lỗi fetch danh sách DJ:", err);
+      }
+    };
+
+    fetchGenres();
+  }, []);
+
+  useEffect(() => {
+    // Define async function inside useEffect
+    const fetchPlaylist = async () => {
+      try {
+        const response = await apiClient.get('/playlists?limit=10');
+        setPlaylists(response.data || []); // Always set an array
+      } catch (err) {
+        console.error("Lỗi fetch danh sách DJ:", err);
+      }
+    };
+
+    fetchPlaylist();
+  }, []);
+
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
 
@@ -104,10 +148,10 @@ function Sidebar({ isOpen, toggleSidebar }) {
             {djs.map(dj => (
               <Link
                 key={dj}
-                to={`/dj/${dj.toLowerCase().replace(/ /g, '-')}`}
-                className={`dropdown-item font-light ${location.pathname === `/dj/${dj.toLowerCase().replace(/ /g, '-')}` ? 'active' : ''}`}
+                to={`/dj/${dj.id}`}
+                className={`dropdown-item font-light ${location.pathname === `/dj/${dj.id}` ? 'active' : ''}`}
               >
-                {dj}
+                {dj.name}
               </Link>
             ))}
           </SidebarItem>
@@ -125,10 +169,10 @@ function Sidebar({ isOpen, toggleSidebar }) {
             {playlists.map(playlist => (
               <Link
                 key={playlist}
-                to={`/playlist/${playlist.toLowerCase().replace(/ /g, '-')}`}
-                className={`dropdown-item font-light ${location.pathname === `/playlist/${playlist.toLowerCase().replace(/ /g, '-')}` ? 'active' : ''}`}
+                to={`/playlist/${playlist.id}`}
+                className={`dropdown-item font-light ${location.pathname === `/playlist/${playlist.id}` ? 'active' : ''}`}
               >
-                {playlist}
+                {playlist.name}
               </Link>
             ))}
           </SidebarItem>
